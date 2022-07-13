@@ -9,7 +9,7 @@ import { PostService } from '../../services/post.service';
 })
 export class CommentsComponent implements OnInit {
   @Input() postID!: number;
-  @Output() onEmit: EventEmitter<Date> = new EventEmitter()
+  @Output() onEmit: EventEmitter<Date> = new EventEmitter();
   comments: Icoment[] = [];
 
   constructor(private postService: PostService) {}
@@ -21,6 +21,6 @@ export class CommentsComponent implements OnInit {
   }
 
   emitir() {
-    this.onEmit.emit(new Date)
+    this.onEmit.emit(new Date());
   }
 }

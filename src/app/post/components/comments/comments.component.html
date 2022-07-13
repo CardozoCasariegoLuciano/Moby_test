@@ -2,9 +2,8 @@
   <h3>Comments</h3>
 
   <div>
-    <div *ngFor="let commnet of comments">
-      <p>nombre: {{ commnet.name }}</p>
-      <p>Comment: {{ commnet.body }}</p>
+    <div *ngFor="let comment of comments">
+      <app-single-comment [comment]="comment"></app-single-comment>
     </div>
   </div>
 

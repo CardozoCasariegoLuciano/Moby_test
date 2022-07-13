@@ -4,6 +4,8 @@ import { PostListComponent } from './pages/post-list/post-list.component';
 import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 import {RouterModule} from '@angular/router';
 import { CommentsComponent } from './components/comments/comments.component';
+import { UserNamePipe } from './pipes/user-name.pipe';
+import { SingleCommentComponent } from './components/single-comment/single-comment.component';
 
 
 
@@ -12,6 +14,8 @@ import { CommentsComponent } from './components/comments/comments.component';
     PostListComponent,
     PostDetailComponent,
     CommentsComponent,
+    UserNamePipe,
+    SingleCommentComponent,
   ],
   exports: [
     PostListComponent,
