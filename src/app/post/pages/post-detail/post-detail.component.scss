@@ -1,0 +1,11 @@
+@use "/src/variables" as v;
+
+.card{
+    background-color: rgba($color: green, $alpha: .2);
+    width: 600px;
+    margin:auto;
+    padding: 30px;
+}
+a{
+ color: v.$main-color;
+}
