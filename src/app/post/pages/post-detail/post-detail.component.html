@@ -1,13 +1,15 @@
-<div *ngIf="post">
-  <h2>{{ post.title | titlecase }}</h2>
-  <small>Post ID: {{ post.id }}</small>
+<div class="conteiner" *ngIf="post">
+  <div class="card">
+    <h2>{{ post.title | titlecase }}</h2>
+    <small>Post ID: {{ post.id }}</small>
 
-  <h3>Content</h3>
-  <p>{{ post.body }}</p>
+    <h3>Content</h3>
+    <p>{{ post.body }}</p>
 
-  <a routerLink="/posts">Back</a>
+    <a routerLink="/posts">Back</a>
 
-  <h3>Comments</h3>
+    <h3>Comments</h3>
 
-  <app-comments [postID]="post.id"></app-comments>
+    <app-comments [postID]="post.id"></app-comments>
+  </div>
 </div>
