@@ -16,10 +16,15 @@ export class PostDetailComponent implements OnInit {
   ) {}
 
   post!: Ipost;
+  emmitedValue! :Date
 
   ngOnInit(): void {
     this.activeRoute.params
       .pipe(switchMap(({ id }) => this.postService.getPostByID(id)))
       .subscribe((data) => this.post = data);
+  }
+
+  printEmmited(event: Date) {
+    this.emmitedValue = event
   }
 }
