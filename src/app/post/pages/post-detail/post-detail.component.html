@@ -1,5 +1,9 @@
-<h2>Post {{id}}</h2>
+<h2>{{post.title | titlecase}}</h2>
+<small>Post ID: {{post.id}}</small>
 
-<p>Content...</p>
+<h3>Content</h3>
+<p>{{post.body}}</p>
+
 
 <a routerLink="/posts">Back</a>
+

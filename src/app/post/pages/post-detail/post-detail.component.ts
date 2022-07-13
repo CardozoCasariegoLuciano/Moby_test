@@ -1,19 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs';
+import { Ipost } from '../../interfaces/user.interface';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-detail',
   templateUrl: './post-detail.component.html',
-  styleUrls: ['./post-detail.component.scss']
+  styleUrls: ['./post-detail.component.scss'],
 })
 export class PostDetailComponent implements OnInit {
+  constructor(
+    private activeRoute: ActivatedRoute,
+    private postService: PostService
+  ) {}
 
-  constructor(private activeRoute: ActivatedRoute) { }
-
-  id!: string
+  post!: Ipost;
 
   ngOnInit(): void {
-    this.activeRoute.params.subscribe(({id}) => this.id = id)
+    this.activeRoute.params
+      .pipe(switchMap(({ id }) => this.postService.getPostByID(id)))
+      .subscribe((data) => this.post = data);
   }
-
 }

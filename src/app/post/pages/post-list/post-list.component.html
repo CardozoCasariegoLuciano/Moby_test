@@ -3,16 +3,16 @@
 <table *ngIf="data.length > 0">
   <thead>
     <tr>
-      <th>Title</th>
       <th>Id</th>
+      <th>Title</th>
       <th>Action</th>
     </tr>
   </thead>
 
   <tbody>
     <tr *ngFor="let cell of data">
-      <td>{{ cell.name }}</td>
       <td>{{ cell.id }}</td>
+      <td>{{ cell.title }}</td>
       <td><a [routerLink]="['/post', cell.id]">Ver mas...</a></td>
     </tr>
   </tbody>

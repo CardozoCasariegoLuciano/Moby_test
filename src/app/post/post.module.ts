@@ -9,7 +9,7 @@ import {RouterModule} from '@angular/router';
 @NgModule({
   declarations: [
     PostListComponent,
-    PostDetailComponent
+    PostDetailComponent,
   ],
   exports: [
     PostListComponent,

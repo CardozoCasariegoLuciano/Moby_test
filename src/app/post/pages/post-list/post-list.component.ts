@@ -1,54 +1,18 @@
-import { Component } from '@angular/core';
-import {Iuser} from '../../interfaces/user.interface';
+import { Component, OnInit } from '@angular/core';
+import { Ipost } from '../../interfaces/user.interface';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.scss']
+  styleUrls: ['./post-list.component.scss'],
 })
-export class PostListComponent {
+export class PostListComponent implements OnInit {
+  data: Ipost[] = [];
 
-  data: Iuser[] = [
-    {
-      name: "Rogelio",
-      id: 1
-    },
-    {
-      name: "Rogelio",
-      id: 2
-    },
-    {
-      name: "Rogelio",
-      id: 3
-    },
-    {
-      name: "Rogelio",
-      id: 4
-    },
-    {
-      name: "Rogelio",
-      id: 5
-    },
-    {
-      name: "Rogelio",
-      id: 6
-    },
-    {
-      name: "Rogelio",
-      id: 7
-    },
-    {
-      name: "Rogelio",
-      id: 8
-    },
-    {
-      name: "Rogelio",
-      id: 9
-    },
-    {
-      name: "Rogelio",
-      id: 10
-    },
-  ]
+  constructor(private postService: PostService) {}
 
+  ngOnInit(): void {
+    this.postService.getPosts().subscribe((resp) => (this.data = resp));
+  }
 }
