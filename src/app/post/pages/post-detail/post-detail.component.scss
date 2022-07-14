@@ -1,0 +1,26 @@
+@use "/src/variables" as v;
+
+.card {
+  background-color: rgba($color: green, $alpha: 0.2);
+  width: 600px;
+  margin: auto;
+  padding: 30px;
+}
+
+.content{
+  margin-bottom: 30px;
+}
+
+a {
+  color: v.$main-color;
+  padding: 7px;
+  font-size: 20px;
+  text-decoration: none;
+  border: 1px solid;
+  border-radius: 100px;
+
+  &:hover {
+    background-color: v.$main-color;
+    color: v.$main-bg;
+  }
+}

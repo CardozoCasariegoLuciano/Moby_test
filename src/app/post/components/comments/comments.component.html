@@ -1,12 +1,12 @@
-<div>
+<div class="comments">
   <h3>Comments</h3>
 
-  <div>
-    <div *ngFor="let commnet of comments">
+  <div >
+    <div class="comment" *ngFor="let commnet of comments">
       <p>nombre: {{ commnet.name }}</p>
       <p>Comment: {{ commnet.body }}</p>
     </div>
   </div>
 
-  <button (click)="emitir()">Emitir</button>
+  <button class="emit-btn" (click)="emitir()">Emit</button>
 </div>

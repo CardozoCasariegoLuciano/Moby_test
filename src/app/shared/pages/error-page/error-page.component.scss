@@ -1,0 +1,16 @@
+@use "/src/variables" as v;
+@use "/src/mixis" as m;
+
+    h2{
+        font-size: 220px;
+        margin: 0px;
+        font-family: "Monospace";
+    }
+
+    p{
+        font-size: 30px;
+    }
+
+    a{
+        color: v.$main-color;
+    }

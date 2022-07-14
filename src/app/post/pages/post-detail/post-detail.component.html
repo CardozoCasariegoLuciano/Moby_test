@@ -1,14 +1,23 @@
 <div *ngIf="post">
-  <div>
-    <small>Post ID: {{ post.id }}</small>
-    <small *ngIf="emmitedValue">Last comment: {{emmitedValue | date:"YYYY MMM, dd"}}</small>
+  <div class="conteiner">
+    <div class="card">
+      <div>
+        <small>Post ID: {{ post.id }}</small>
+        <small *ngIf="emmitedValue"
+          >Last comment: {{ emmitedValue | date: "YYYY MMM, dd" }}</small
+        >
+      </div>
+      <h2>{{ post.title | titlecase }}</h2>
+
+      <h3>Content</h3>
+      <p class="content">{{ post.body }}</p>
+
+      <a routerLink="/posts">Back</a>
+
+      <app-comments
+        [postID]="post.id"
+        (onEmit)="printEmmited($event)"
+      ></app-comments>
+    </div>
   </div>
-  <h2>{{ post.title | titlecase }}</h2>
-
-  <h3>Content</h3>
-  <p>{{ post.body }}</p>
-
-  <a routerLink="/posts">Back</a>
-
-  <app-comments [postID]="post.id" (onEmit)="printEmmited($event)" ></app-comments>
 </div>
