@@ -1,0 +1,10 @@
+<div class="singleComment">
+  <p>Name: {{ comment | userName: isUpper }}</p>
+  <p>{{ comment.body }}</p>
+  <button
+    (click)="changeCase()"
+    [ngClass]="{ btn_Uppercase: isUpper, btn_Lowercase: !isUpper }"
+  >
+    change Case
+  </button>
+</div>

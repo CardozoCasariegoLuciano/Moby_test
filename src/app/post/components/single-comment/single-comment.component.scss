@@ -1,0 +1,29 @@
+.btn_Uppercase {
+  background-color: rgba(red, 0.2);
+}
+
+.btn_Lowercase {
+  background-color: rgba(purple, 0.2);
+}
+
+.singleComment {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  color: lightgrey;
+  height: 30px;
+  font-size: 14px;
+  align-self: flex-end;
+
+  &:hover {
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+  }
+}
