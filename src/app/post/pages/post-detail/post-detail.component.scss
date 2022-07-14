@@ -24,3 +24,8 @@ a {
     color: v.$main-bg;
   }
 }
+
+.info-section{
+  display: flex;
+  justify-content: space-between;
+}

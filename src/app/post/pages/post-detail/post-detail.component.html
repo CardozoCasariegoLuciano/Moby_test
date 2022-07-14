@@ -1,10 +1,10 @@
 <div *ngIf="post">
   <div class="conteiner">
     <div class="card">
-      <div>
+      <div class="info-section">
         <small>Post ID: {{ post.id }}</small>
         <small *ngIf="emmitedValue"
-          >Last comment: {{ emmitedValue | date: "YYYY MMM, dd" }}</small
+          >Last comment: {{ emmitedValue | date: "dd MMM, YYYY" }}</small
         >
       </div>
       <h2>{{ post.title | titlecase }}</h2>
