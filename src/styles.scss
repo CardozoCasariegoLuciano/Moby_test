@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@use "./variables" as v;
+@use "/src/mixis" as m;
+
+body {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  background-color: v.$main-bg;
+  color: v.$main-color;
+  font-family: v.$main-family;
+}
+
+.conteiner {
+  @include m.centerContent();
+}
+
+.mb {
+  margin-bottom: 40px;
+}

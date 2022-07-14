@@ -1,19 +1,21 @@
-<h1>Post List</h1>
+<div class="conteiner mb">
+  <h1>Post List</h1>
 
-<table *ngIf="data.length > 0">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Title</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+  <table *ngIf="data.length > 0">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Action</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <tr *ngFor="let cell of data">
-      <td>{{ cell.id }}</td>
-      <td>{{ cell.title }}</td>
-      <td><a [routerLink]="['/post', cell.id]">Ver mas...</a></td>
-    </tr>
-  </tbody>
-</table>
+    <tbody>
+      <tr *ngFor="let cell of data">
+        <td>{{ cell.id }}</td>
+        <td>{{ cell.title }}</td>
+        <td><a [routerLink]="['/post', cell.id]">Ver mas...</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
