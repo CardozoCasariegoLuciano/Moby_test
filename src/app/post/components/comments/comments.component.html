@@ -1,11 +1,11 @@
-<div>
+<div class="comments">
   <h3>Comments</h3>
 
   <div>
-    <div *ngFor="let comment of comments">
+    <div class="comment" *ngFor="let comment of comments">
       <app-single-comment [comment]="comment"></app-single-comment>
     </div>
   </div>
 
-  <button (click)="emitir()">Emitir</button>
+  <button class="emit-btn" (click)="emitir()">Emit</button>
 </div>
