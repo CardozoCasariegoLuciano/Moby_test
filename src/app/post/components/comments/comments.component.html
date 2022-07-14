@@ -1,11 +1,15 @@
 <div class="comments">
   <h3>Comments</h3>
 
-  <div>
+  <div *ngIf="comments.length > 0; else spiner">
     <div class="comment" *ngFor="let comment of comments">
       <app-single-comment [comment]="comment"></app-single-comment>
     </div>
   </div>
 
-  <button class="emit-btn" (click)="emitir()">Emit</button>
+  <ng-template #spiner>
+    <app-spiner></app-spiner>
+  </ng-template>
+
+  <button class="emit-btn" (click)="emitir()">New comment</button>
 </div>

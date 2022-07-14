@@ -1,0 +1,52 @@
+.spiner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.animation-container {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.circle {
+  height: 30px;
+  width: 30px;
+  background: #f04e4e;
+  border-radius: 50%;
+  align-self: center;
+}
+.circle-1 {
+  animation: bounce 1s linear infinite;
+}
+.circle-2 {
+  animation: bounce 1s linear infinite;
+  animation-delay: 0.5s;
+}
+.circle-3 {
+  animation: bounce 1s linear infinite;
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateY(-20px);
+  }
+  50% {
+    transform: translateY(0px);
+  }
+  75% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}

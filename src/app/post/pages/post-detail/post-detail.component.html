@@ -1,18 +1,19 @@
-<div *ngIf="post">
-  <div class="conteiner">
+<div class="conteiner">
+  <div *ngIf="post; else spiner">
     <div class="card">
       <div class="info-section">
         <small>Post ID: {{ post.id }}</small>
-        <small *ngIf="emmitedValue"
-          >Last comment: {{ emmitedValue | date: "dd MMM, YYYY" }}</small
-        >
+        <small *ngIf="emmitedValue">
+          Last comment: {{ emmitedValue | date: "dd MMM, YYYY" }}
+        </small>
       </div>
       <h2>{{ post.title | titlecase }}</h2>
 
-      <h3>Content</h3>
-      <p class="content">{{ post.body }}</p>
+      <div class="back-btn">
+        <a routerLink="/posts"> < </a>
+      </div>
 
-      <a routerLink="/posts">Back</a>
+      <p class="content">{{ post.body }}</p>
 
       <app-comments
         [postID]="post.id"
@@ -20,4 +21,8 @@
       ></app-comments>
     </div>
   </div>
+
+  <ng-template #spiner>
+    <app-spiner></app-spiner>
+  </ng-template>
 </div>

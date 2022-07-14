@@ -1,18 +1,22 @@
-.comments{
-    margin-top: 40px;
+.comments {
+  margin-bottom: 40px;
 }
 
-.comment{
-    background-color:rgba(#495057, .3);
-    padding: 5px;
-    border-radius: 5px;
-    margin-bottom: 15px;
+.comment {
+  background-color: rgba(#495057, 0.3);
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
-.emit-btn{
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 100px;
+.emit-btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 100px;
+
+  &:hover {
+    color: purple;
+  }
 }

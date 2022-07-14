@@ -6,6 +6,7 @@ import {RouterModule} from '@angular/router';
 import { CommentsComponent } from './components/comments/comments.component';
 import { UserNamePipe } from './pipes/user-name.pipe';
 import { SingleCommentComponent } from './components/single-comment/single-comment.component';
+import {SharedModule} from '../shared/shared.module';
 
 
 
@@ -24,6 +25,7 @@ import { SingleCommentComponent } from './components/single-comment/single-comme
   imports: [
     CommonModule,
     RouterModule,
+    SharedModule,
   ]
 })
 export class PostModule { }

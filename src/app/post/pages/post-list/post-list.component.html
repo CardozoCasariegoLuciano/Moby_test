@@ -1,7 +1,7 @@
 <div class="conteiner mb">
-  <h1>Post List</h1>
+  <h1>Posts List</h1>
 
-  <table *ngIf="data.length > 0">
+  <table *ngIf="data.length > 0; else spiner">
     <thead>
       <tr>
         <th>Id</th>
@@ -18,4 +18,10 @@
       </tr>
     </tbody>
   </table>
+
+  <ng-template #spiner>
+    <app-spiner></app-spiner>
+  </ng-template>
+
+
 </div>

@@ -7,25 +7,34 @@
   padding: 30px;
 }
 
-.content{
+.content {
   margin-bottom: 30px;
 }
 
-a {
-  color: v.$main-color;
-  padding: 7px;
-  font-size: 20px;
-  text-decoration: none;
-  border: 1px solid;
-  border-radius: 100px;
+.back-btn {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+  height: 40px;
+  width: 40px;
+  background-color: v.$main-color;
+  color: v.$main-bg;
+  border-radius: 100%;
 
-  &:hover {
-    background-color: v.$main-color;
-    color: v.$main-bg;
+  a {
+    font-family: "Times New Roman", "Times", "serif";
+    margin-left: 6px;
+    font-size: 40px;
+    line-height: 41px;
+    text-decoration: none;
+
+    &:hover {
+      color: rgba($color: green, $alpha: 1);
+    }
   }
 }
 
-.info-section{
+.info-section {
   display: flex;
   justify-content: space-between;
 }
