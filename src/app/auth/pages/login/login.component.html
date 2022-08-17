@@ -1,0 +1,39 @@
+<div class="conteiner">
+  <form class="auth-form" [formGroup]="loginForm" (submit)="login()">
+    <h2>LogIn</h2>
+    <div class="auth-form__input">
+      <span class="p-input-icon-left">
+        <i class="pi pi-user"></i>
+        <input
+          type="text"
+          pInputText
+          placeholder="Email"
+          formControlName="email"
+        />
+      </span>
+      <p *ngIf="isValidField('email')" class="error-msg">Email is required</p>
+    </div>
+
+    <div class="auth-form__input">
+      <span class="p-input-icon-left">
+        <i class="pi pi-lock"></i>
+        <input
+          type="password"
+          pInputText
+          placeholder="Password"
+          formControlName="password"
+        />
+      </span>
+      <p *ngIf="isValidField('password')" class="error-msg">
+        Password is required
+      </p>
+    </div>
+
+    <div class="auth-form__actions">
+      <a routerLink="/auth/register">Don't have an acount yet?</a>
+      <p-button type="submit" label="login"></p-button>
+    </div>
+
+    <p *ngIf="loginError.showMsg" class="error-msg-box">{{loginError.message}}</p>
+  </form>
+</div>

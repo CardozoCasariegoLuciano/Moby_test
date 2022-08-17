@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PostDetailComponent } from './post/pages/post-detail/post-detail.component';
-import { PostListComponent } from './post/pages/post-list/post-list.component';
+import {AuthGuard} from './auth/guards/auth-guard';
 import { ErrorPageComponent } from './shared/pages/error-page/error-page.component';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'posts',
-    pathMatch: 'full',
+    path: "auth",
+    loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule)
   },
   {
     path: "",
-    loadChildren: () => import("./post/post.module").then(m => m.PostModule)
+    loadChildren: () => import("./post/post.module").then(m => m.PostModule),
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard]
   },
   {
     path: '404',
