@@ -7,6 +7,7 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { UserNamePipe } from './pipes/user-name.pipe';
 import { SingleCommentComponent } from './components/single-comment/single-comment.component';
 import {SharedModule} from '../shared/shared.module';
+import {PostRouterModule} from './post-routing.module';
 
 
 
@@ -26,6 +27,7 @@ import {SharedModule} from '../shared/shared.module';
     CommonModule,
     RouterModule,
     SharedModule,
+    PostRouterModule,
   ]
 })
 export class PostModule { }

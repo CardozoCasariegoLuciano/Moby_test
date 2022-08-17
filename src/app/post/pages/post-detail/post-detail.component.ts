@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { Ipost } from '../../interfaces/user.interface';
 import { PostService } from '../../services/post.service';
@@ -12,19 +12,29 @@ import { PostService } from '../../services/post.service';
 export class PostDetailComponent implements OnInit {
   constructor(
     private activeRoute: ActivatedRoute,
-    private postService: PostService
+    private postService: PostService,
+    private router: Router
   ) {}
 
   post!: Ipost;
-  emmitedValue! :Date
+  emmitedValue!: Date;
 
   ngOnInit(): void {
+    this.initPost();
+  }
+
+  private initPost() {
     this.activeRoute.params
-      .pipe(switchMap(({ id }) => this.postService.getPostByID(id)))
-      .subscribe((data) => this.post = data);
+      .pipe(switchMap(({id}) => this.postService.getPostByID(id)))
+      .subscribe(
+        (data) => {
+          this.post = data;
+        },
+        (err) => this.router.navigate(['404'])
+      );
   }
 
   printEmmited(event: Date) {
-    this.emmitedValue = event
+    this.emmitedValue = event;
   }
 }

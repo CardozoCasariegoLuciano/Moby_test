@@ -11,16 +11,16 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'posts',
-    component: PostListComponent,
+    path: "",
+    loadChildren: () => import("./post/post.module").then(m => m.PostModule)
   },
   {
-    path: 'post/:id',
-    component: PostDetailComponent,
+    path: '404',
+    component: ErrorPageComponent,
   },
   {
     path: '**',
-    component: ErrorPageComponent,
+    redirectTo:"404"
   },
 ];
 

@@ -9,6 +9,7 @@ import {SharedModule} from './shared/shared.module';
 
 import es from "@angular/common/locales/es";
 import { registerLocaleData } from "@angular/common";
+import {PrimeNGModule} from './prime-ng/prime-ng.module';
 registerLocaleData(es)
 
 @NgModule({
@@ -19,6 +20,7 @@ registerLocaleData(es)
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    PrimeNGModule,
 
     PostModule,
     SharedModule,

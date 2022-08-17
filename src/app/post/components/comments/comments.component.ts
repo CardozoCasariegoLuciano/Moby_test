@@ -15,6 +15,10 @@ export class CommentsComponent implements OnInit {
   constructor(private postService: PostService) {}
 
   ngOnInit(): void {
+    this.initComents();
+  }
+
+  private initComents() {
     this.postService
       .getPostComments(this.postID)
       .subscribe((resp) => (this.comments = resp));
