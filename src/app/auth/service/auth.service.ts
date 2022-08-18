@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Iauth } from '../interfaces/auth.interface';
 import { IuserLogin } from '../interfaces/login.interface';
 import { IuserRegister } from '../interfaces/register.interface';
@@ -10,7 +11,7 @@ import { IuserRegister } from '../interfaces/register.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  baseURL = 'https://luciano-cardozo-endpoint.herokuapp.com/users';
+  baseURL = environment.baseURL
   private userLogued: Iauth | undefined;
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -19,7 +20,7 @@ export class AuthService {
     const userID = localStorage.getItem("userID")
     if (!userID) return of(false)
 
-    return this.http.get<Iauth>(`${this.baseURL}/${userID}`)
+    return this.http.get<Iauth>(`${this.baseURL}/users/${userID}`)
       .pipe(
         map(auth => {
           this.userLogued = auth;
@@ -33,7 +34,7 @@ export class AuthService {
   }
 
   login(data: IuserLogin) {
-    return this.http.get<Iauth[]>(`${this.baseURL}?email=${data.email}`).pipe(
+    return this.http.get<Iauth[]>(`${this.baseURL}/users?email=${data.email}`).pipe(
       map((user) => {
         if (this.isValidLogin(user, data.password)) {
           this.userLogued = user[0];
@@ -54,7 +55,7 @@ export class AuthService {
   }
 
   register(data: IuserRegister) {
-    return this.http.get<Iauth[]>(`${this.baseURL}?email=${data.email}`).pipe(
+    return this.http.get<Iauth[]>(`${this.baseURL}/users?email=${data.email}`).pipe(
       map((user) => {
         if (user.length === 0) {
           this.registerUser(data).subscribe();
@@ -67,7 +68,7 @@ export class AuthService {
   }
 
   registerUser(data: IuserRegister) {
-    return this.http.post<Iauth>(`${this.baseURL}`, data).pipe(
+    return this.http.post<Iauth>(`${this.baseURL}/users`, data).pipe(
       tap((user) => {
         this.userLogued = user;
         localStorage.setItem('userID', user.id.toString());
@@ -84,7 +85,7 @@ export class AuthService {
 
 
   editUser(data: Iauth) {
-    return this.http.patch<Iauth>(`${this.baseURL}/${data.id}`, data).pipe(
+    return this.http.patch<Iauth>(`${this.baseURL}/users/${data.id}`, data).pipe(
       tap(user => {
         this.userLogued = user;
       })

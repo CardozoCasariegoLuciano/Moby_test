@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, Subject, tap, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { NewPost } from '../interfaces/posts.interface';
 import { Icoment, Ipost } from '../interfaces/user.interface';
 
@@ -9,7 +10,7 @@ import { Icoment, Ipost } from '../interfaces/user.interface';
   providedIn: 'root',
 })
 export class PostService {
-  private postsURL: string = 'https://luciano-cardozo-endpoint.herokuapp.com';
+  private postsURL: string = environment.baseURL;
 
   subjectNotifier: Subject<null> = new Subject<null>();
 
