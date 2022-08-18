@@ -6,4 +6,11 @@
     [ngClass]="{ btn_Uppercase: isUpper, btn_Lowercase: !isUpper }" >
     {{!isUpper ? "To UpperCase" : "To LoweCase"}}
   </button>
+  <button class="emit-btn" (click)="showDialog()">New comment</button>
 </div>
+
+<app-comment-form
+  [showForm]="displayBasic"
+  (oncloseModal)="closeModal($event)"
+  [comment] = "comment"
+></app-comment-form>

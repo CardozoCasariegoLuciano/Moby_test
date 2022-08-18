@@ -9,8 +9,22 @@ import { Icoment } from '../../interfaces/user.interface';
 export class SingleCommentComponent {
   @Input() comment!: Icoment;
   isUpper: boolean = false;
+  displayBasic: boolean = false;
 
   changeCase() {
     this.isUpper = !this.isUpper;
+    console.log(this.comment)
   }
+
+
+  showDialog() {
+    this.displayBasic = true;
+  }
+
+  closeModal(event: boolean) {
+    this.displayBasic = event;
+  }
+
+
+
 }

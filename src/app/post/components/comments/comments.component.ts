@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { AuthService } from 'src/app/auth/service/auth.service';
 import { Icoment } from '../../interfaces/user.interface';
 import { PostService } from '../../services/post.service';
 
@@ -11,6 +13,7 @@ export class CommentsComponent implements OnInit {
   @Input() postID!: number;
   @Output() onEmit: EventEmitter<Date> = new EventEmitter();
   comments: Icoment[] = [];
+  displayBasic: boolean = false;
 
   constructor(private postService: PostService) {}
 
@@ -24,7 +27,15 @@ export class CommentsComponent implements OnInit {
       .subscribe((resp) => (this.comments = resp));
   }
 
-  emitir() {
-    this.onEmit.emit(new Date());
+  sendEmmitd(value: Date) {
+    this.onEmit.emit(value);
+  }
+
+  showDialog() {
+    this.displayBasic = true;
+  }
+
+  closeModal(event: boolean) {
+    this.displayBasic = event;
   }
 }

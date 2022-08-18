@@ -8,6 +8,9 @@ import { UserNamePipe } from './pipes/user-name.pipe';
 import { SingleCommentComponent } from './components/single-comment/single-comment.component';
 import {SharedModule} from '../shared/shared.module';
 import {PostRouterModule} from './post-routing.module';
+import {PrimeNGModule} from '../prime-ng/prime-ng.module';
+import {ReactiveFormsModule} from '@angular/forms';
+import { CommentFormComponent } from './components/comment-form/comment-form.component';
 
 
 
@@ -18,6 +21,7 @@ import {PostRouterModule} from './post-routing.module';
     CommentsComponent,
     UserNamePipe,
     SingleCommentComponent,
+    CommentFormComponent,
   ],
   exports: [
     PostListComponent,
@@ -28,6 +32,8 @@ import {PostRouterModule} from './post-routing.module';
     RouterModule,
     SharedModule,
     PostRouterModule,
+    PrimeNGModule,
+    ReactiveFormsModule,
   ]
 })
 export class PostModule { }

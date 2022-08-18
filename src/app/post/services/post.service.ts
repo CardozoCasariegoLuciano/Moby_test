@@ -1,14 +1,15 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import {NewPost} from '../interfaces/posts.interface';
 import { Icoment, Ipost } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  private postsURL: string = 'https://jsonplaceholder.typicode.com';
+  private postsURL: string = 'https://luciano-cardozo-endpoint.herokuapp.com';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -32,5 +33,14 @@ export class PostService {
 
   errorHandler(err: HttpErrorResponse) {
     return throwError('Content not found');
+  }
+
+
+  addPost(data: NewPost) {
+    return this.http
+      .post(`${this.postsURL}/comments`, data).pipe(
+        tap(resp => console.log(resp))
+    )
+
   }
 }

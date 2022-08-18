@@ -1,0 +1,50 @@
+<p-dialog
+  header="New comment"
+  [(visible)]="showForm"
+  [style]="{ width: '25vw' }"
+  [closable]="false"
+>
+  <div class="">
+    <form class="edit-form" [formGroup]="commentsForm">
+      <div class="auth-form__input">
+        <span class="p-float-label">
+          <input
+            id="float-input"
+            formControlName="name"
+            type="text"
+            pInputText
+          />
+          <label for="float-input">Title</label>
+        </span>
+      </div>
+
+      <div class="auth-form__input">
+        <span class="p-float-label">
+          <textarea
+            id="float-input"
+            rows="9"
+            cols="30"
+            pInputTextarea
+            formControlName="body"
+          ></textarea>
+          <label for="float-input">Body</label>
+        </span>
+      </div>
+    </form>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="closeModal()"
+      label="Cancel"
+      styleClass="p-button-text p-button-danger"
+    ></p-button>
+    <p-button
+      icon="pi pi-check"
+      (click)="emitir()"
+      label="{{ isEditing ? 'Edit' : 'Add' }}"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>

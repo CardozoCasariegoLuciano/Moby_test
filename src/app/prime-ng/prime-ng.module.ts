@@ -3,6 +3,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {MenubarModule} from 'primeng/menubar';
 import {DialogModule} from 'primeng/dialog';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   exports: [
@@ -10,6 +11,7 @@ import {DialogModule} from 'primeng/dialog';
     ButtonModule,
     MenubarModule,
     DialogModule,
+    InputTextareaModule,
   ]
 })
 export class PrimeNGModule { }

@@ -11,5 +11,12 @@
     <app-spiner></app-spiner>
   </ng-template>
 
-  <button class="emit-btn" (click)="emitir()">New comment</button>
+  <button class="emit-btn" (click)="showDialog()">New comment</button>
 </div>
+
+<app-comment-form
+  [postID]="postID"
+  [showForm]="displayBasic"
+  (onEmit)="sendEmmitd($event)"
+  (oncloseModal)="closeModal($event)"
+></app-comment-form>
