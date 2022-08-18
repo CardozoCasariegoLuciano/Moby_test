@@ -85,4 +85,13 @@ export class AuthService {
     this.userLogued = undefined;
     this.router.navigate(['/auth/login']);
   }
+
+
+  editUser(data: Iauth) {
+    return this.http.patch<Iauth>(`${this.baseURL}/${data.id}`, data).pipe(
+      tap(user => {
+        this.userLogued = user;
+      })
+    )
+  }
 }

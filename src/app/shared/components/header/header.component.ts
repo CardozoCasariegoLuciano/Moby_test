@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/auth/service/auth.service';
+import { Iauth } from '../../../auth/interfaces/auth.interface';
 
 @Component({
   selector: 'app-header',
@@ -12,23 +13,21 @@ export class HeaderComponent implements OnInit {
   displayBasic!: boolean;
   items: MenuItem[] = [];
   editUserForm!: FormGroup;
-  
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+
+  constructor(private authService: AuthService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.initMenuItems();
     this.initForm();
-
-    console.log("init: ",this.userLogued)
   }
 
   private initForm() {
     this.editUserForm = this.fb.group({
-      name: ['', [Validators.required]],
-      username: ['', [Validators.required]],
-      password: [''],
-      newPasswords: [''],
-      repeatNewPassword: [''],
+      name: [null, [Validators.required]],
+      username: [null, [Validators.required]],
+      password: [null],
+      newPasswords: [null],
+      repeatNewPassword: [null],
     });
   }
 
@@ -42,14 +41,14 @@ export class HeaderComponent implements OnInit {
           {
             label: 'Edit',
             icon: 'pi pi-fw pi-user-edit',
-            command: (event: Event) => {
+            command: () => {
               this.showDialog();
             },
           },
           {
             label: 'Log out',
             icon: 'pi pi-fw pi-power-off',
-            command: (event: Event) => {
+            command: () => {
               this.logOut();
             },
           },
@@ -68,13 +67,27 @@ export class HeaderComponent implements OnInit {
     this.displayBasic = true;
   }
 
+  closeModal() {
+    this.displayBasic = false;
+  }
+
   logOut() {
     this.authService.logOut();
   }
 
   editData() {
+    if (this.editUserForm.invalid) return
+    if (!this.arePasswordsOk()) return
+
+    let data: Iauth = {
+      id: this.userLogued.id!
+    }
+
+    data = this.addFields(data)
+
     this.displayBasic = false;
-    console.log(this.editUserForm.value)
+    this.authService.editUser(data).subscribe()
+    this.editUserForm.reset()
   }
 
   isValidField(name: string) {
@@ -82,5 +95,48 @@ export class HeaderComponent implements OnInit {
       this.editUserForm.controls[name].errors &&
       this.editUserForm.controls[name].touched
     );
+  }
+
+  arePasswordsOk() {
+    const actualPass = this.userLogued.password
+    const pass = this.editUserForm.controls["password"].value
+    const newPass = this.editUserForm.controls["newPasswords"].value
+    const repeateNewPass = this.editUserForm.controls["repeatNewPassword"].value
+
+    if (pass === null &&
+      newPass === null &&
+      repeateNewPass === null) {
+      return true
+    }
+
+    if (actualPass != pass) {
+      this.editUserForm.controls["password"].setErrors({wrongPass: true})
+      return false
+    }
+
+    if (newPass != repeateNewPass) {
+      this.editUserForm.controls["repeatNewPassword"].setErrors({dontMatch: true})
+      return false
+    }
+
+    return true
+  }
+
+  addFields(data: Iauth): Iauth {
+    const name = this.editUserForm.controls["name"].value
+    const username = this.editUserForm.controls["username"].value
+    const pass = this.editUserForm.controls["newPasswords"].value
+
+    if (name != null) {
+      data.name = name
+    }
+    if (username != null) {
+      data.username = username
+    }
+    if (pass != null) {
+      data.password = pass
+    }
+
+    return data
   }
 }

@@ -1,9 +1,9 @@
 export interface Iauth {
     id:       number;
-    name:     string;
-    username: string;
-    email:    string;
-    password: string;
+    name?:     string;
+    username?: string;
+    email?:    string;
+    password?: string;
     address?:  Address;
     phone?:    string;
     website?:  string;

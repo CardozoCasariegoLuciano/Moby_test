@@ -7,39 +7,23 @@
   </ng-template>
 </p-menubar>
 
-<p-dialog
-  header="Edit user information"
-  [(visible)]="displayBasic"
-  [style]="{ width: '25vw' }"
->
+<p-dialog header="Edit user information" [(visible)]="displayBasic" [style]="{ width: '25vw' }" [closable]="false">
   <div class="">
-    <form class="auth-form" [formGroup]="editUserForm" >
+    <form class="auth-form" [formGroup]="editUserForm">
       <div class="auth-form__input">
         <span class="p-input-icon-left">
           <i class="pi pi-user"></i>
-          <input
-            type="text"
-            pInputText
-            placeholder="{{userLogued.name}}"
-            formControlName="name"
-          />
+          <input type="text" pInputText placeholder="Name" formControlName="name" />
         </span>
-        <p *ngIf="isValidField('name')" class="error-msg">Name is required</p>
+        <small *ngIf="isValidField('name')" class="p-error block">Name is required</small>
       </div>
 
       <div class="auth-form__input">
         <span class="p-input-icon-left">
           <i class="pi pi-user"></i>
-          <input
-            type="text"
-            pInputText
-            placeholder="Username: {{userLogued.username}}"
-            formControlName="username"
-          />
+          <input type="text" pInputText placeholder="Username" formControlName="username" />
         </span>
-        <p *ngIf="isValidField('username')" class="error-msg">
-          Username is required
-        </p>
+        <small *ngIf="isValidField('username')" class="p-error block">Username is required</small>
       </div>
 
       <h5>Change password</h5>
@@ -47,57 +31,32 @@
       <div class="auth-form__input">
         <span class="p-input-icon-left">
           <i class="pi pi-lock"></i>
-          <input
-            type="password"
-            pInputText
-            placeholder="Actual password"
-            formControlName="password"
-          />
+          <input type="password" pInputText placeholder="Actual password" formControlName="password" />
         </span>
-        <p *ngIf="isValidField('password')" class="error-msg">
-          Password is required
-        </p>
+        <small *ngIf="isValidField('password')" class="p-error block"> Wrong passwords</small>
       </div>
 
       <div class="auth-form__input">
         <span class="p-input-icon-left">
           <i class="pi pi-lock"></i>
-          <input
-            type="password"
-            pInputText
-            placeholder="New password"
-            formControlName="newPasswords"
-          />
+          <input type="password" pInputText placeholder="New password" formControlName="newPasswords" />
         </span>
-        <p *ngIf="isValidField('password')" class="error-msg">
-          Password is required
-        </p>
       </div>
 
       <div class="auth-form__input">
         <span class="p-input-icon-left">
           <i class="pi pi-lock"></i>
-          <input
-            type="password"
-            pInputText
-            placeholder="Repeat new password"
-            formControlName="repeatNewPassword"
-          />
+          <input type="password" pInputText placeholder="Repeat new password" formControlName="repeatNewPassword" />
         </span>
-        <p *ngIf="isValidField('password')" class="error-msg">
-          Repeated password is required
-        </p>
+        <small *ngIf="isValidField('repeatNewPassword')" class="p-error block"> Passwords dont match</small>
       </div>
     </form>
   </div>
 
   <ng-template pTemplate="footer">
-    <p-button
-      icon="pi pi-check"
-      (click)="editData()"
-      label="Edit"
-      styleClass="p-button-text"
-    ></p-button>
+    <p-button icon="pi pi-times" (click)="closeModal()" label="Cancel" styleClass="p-button-text p-button-danger">
+    </p-button>
+    <p-button icon="pi pi-check" (click)="editData()" label="Edit" [disabled]="editUserForm.invalid"
+      styleClass="p-button-text"></p-button>
   </ng-template>
 </p-dialog>
-
