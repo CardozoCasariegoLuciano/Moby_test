@@ -6,13 +6,13 @@ import { ErrorPageComponent } from './shared/pages/error-page/error-page.compone
 const routes: Routes = [
   {
     path: "auth",
-    loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule)
+    loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule),
   },
   {
     path: "",
     loadChildren: () => import("./post/post.module").then(m => m.PostModule),
+    canLoad: [AuthGuard],
     canActivate: [AuthGuard],
-    canLoad: [AuthGuard]
   },
   {
     path: '404',

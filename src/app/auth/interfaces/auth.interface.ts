@@ -4,10 +4,10 @@ export interface Iauth {
     username: string;
     email:    string;
     password: string;
-    address:  Address;
-    phone:    string;
-    website:  string;
-    company:  Company;
+    address?:  Address;
+    phone?:    string;
+    website?:  string;
+    company?:  Company;
 }
 
 export interface Address {

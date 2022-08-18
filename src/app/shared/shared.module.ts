@@ -3,20 +3,26 @@ import { CommonModule } from '@angular/common';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import {RouterModule} from '@angular/router';
 import { SpinerComponent } from './components/spiner/spiner.component';
-
+import { HeaderComponent } from './components/header/header.component';
+import {PrimeNGModule} from '../prime-ng/prime-ng.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     ErrorPageComponent,
-    SpinerComponent
+    SpinerComponent,
+    HeaderComponent
   ],
   exports: [
-    SpinerComponent
+    SpinerComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    PrimeNGModule,
+    ReactiveFormsModule,
   ]
 })
 export class SharedModule { }

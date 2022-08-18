@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Iauth } from '../interfaces/auth.interface';
 import { IuserLogin } from '../interfaces/login.interface';
@@ -11,25 +11,29 @@ import { IuserRegister } from '../interfaces/register.interface';
 })
 export class AuthService {
   baseURL = 'https://luciano-cardozo-endpoint.herokuapp.com/users';
-  userLogued: Iauth | undefined;
+  /* baseURL = "http://localhost:3000" */
+  private userLogued: Iauth | undefined;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   hasSessionActive(): Observable<boolean> {
-    const userID = localStorage.getItem('userID');
 
-    if (!userID) return of(false);
+    const userID = localStorage.getItem("userID")
+    if (!userID) {
+      return of(false)
+    }
 
-    return this.http.get<Iauth>(`${this.baseURL}/${userID}`).pipe(
-      map((user) => {
-        this.userLogued = user;
-        return true;
-      })
-    );
+    return this.http.get<Iauth>(`${this.baseURL}/${userID}`)
+    .pipe(
+      map(auth => { 
+        this.userLogued = auth;       
+        return true })
+    )    
   }
 
-  public get getUserLogued(): Iauth | undefined {
-    return this.userLogued;
+  get getUserLogued() {
+    //console.log("getter: ",this.userLogued)
+    return { ...this.userLogued };
   }
 
   login(data: IuserLogin) {
@@ -38,14 +42,11 @@ export class AuthService {
         if (this.isValidLogin(user, data.password)) {
           this.userLogued = user[0];
           localStorage.setItem('userID', user[0].id.toString());
-          this.router.navigate(["/posts"])
+          this.router.navigate(['/posts']);
           return true;
         }
         return false;
-      }),
-      catchError((err) => {
-        return throwError('Something went wrong');
-      })
+      }),     
     );
   }
 
@@ -61,35 +62,27 @@ export class AuthService {
       map((user) => {
         if (user.length === 0) {
           this.registerUser(data).subscribe();
-          this.router.navigate(["/posts"])
           return true;
         } else {
           return false;
         }
-      }),
-      catchError((err) => {
-        return throwError('Something went wrong');
-      })
+      }),     
     );
   }
 
   registerUser(data: IuserRegister) {
     return this.http.post<Iauth>(`${this.baseURL}`, data).pipe(
-      tap(user => {
-          console.log(user)
-          this.userLogued = user;
-          localStorage.setItem('userID', user.id.toString());
-      }),
-      catchError((err) => {
-        return throwError('Something went wrong');
-      })
+      tap((user) => {
+        this.userLogued = user;
+        localStorage.setItem('userID', user.id.toString());
+        this.router.navigate(['/posts']);
+      }),      
     );
   }
 
-
-  logOut(){
-    localStorage.removeItem("userID")
-    this.userLogued = undefined
-    this.router.navigate(["/auth/login"])
+  logOut() {
+    localStorage.removeItem('userID');
+    this.userLogued = undefined;
+    this.router.navigate(['/auth/login']);
   }
 }

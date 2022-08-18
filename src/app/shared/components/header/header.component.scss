@@ -1,0 +1,17 @@
+.userName {
+  font-size: 16px;
+  margin: 0px 20px 0px 10px;
+}
+
+.logo{
+  font-size: 20px;
+  margin: 0px 0px 0px 20px;
+}
+
+.layout-wrapper .layout-menu li a > .myclass{
+  margin-left: auto;
+}
+
+:host ::ng-deep p-menubarsub {
+    width: 100%;
+}
