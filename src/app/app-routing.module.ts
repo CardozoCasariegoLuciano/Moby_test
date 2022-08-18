@@ -6,6 +6,11 @@ import { ErrorPageComponent } from './shared/pages/error-page/error-page.compone
 
 const routes: Routes = [
   {
+    path: "",
+    redirectTo:"auth/login",
+    pathMatch: "full"
+  },
+  {
     path: "auth",
     loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule),
     canLoad: [UserLoguedGuard],
