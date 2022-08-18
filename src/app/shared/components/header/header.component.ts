@@ -63,6 +63,8 @@ export class HeaderComponent implements OnInit {
   }
 
   showDialog() {
+    this.editUserForm.controls["name"].reset(this.userLogued.name)
+    this.editUserForm.controls["username"].reset(this.userLogued.username)
     this.displayBasic = true;
   }
 

@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AuthService } from 'src/app/auth/service/auth.service';
 import { Icoment } from '../../interfaces/user.interface';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-single-comment',
@@ -8,14 +10,25 @@ import { Icoment } from '../../interfaces/user.interface';
 })
 export class SingleCommentComponent {
   @Input() comment!: Icoment;
+  @Output() onUpdate: EventEmitter<boolean> = new EventEmitter();
   isUpper: boolean = false;
   displayBasic: boolean = false;
 
-  changeCase() {
-    this.isUpper = !this.isUpper;
-    console.log(this.comment)
+  constructor(private authService: AuthService, private postService: PostService) { }
+
+  get userLogued() {
+    return this.authService.getUserLogued;
   }
 
+  canDo(): boolean {
+    const userEmail = this.authService.getUserLogued.email!;
+    const authorEmail = this.comment.email;
+    return userEmail === authorEmail;
+  }
+
+  changeCase() {
+    this.isUpper = !this.isUpper;
+  }
 
   showDialog() {
     this.displayBasic = true;
@@ -23,8 +36,11 @@ export class SingleCommentComponent {
 
   closeModal(event: boolean) {
     this.displayBasic = event;
+    this.onUpdate.emit(true)
   }
 
+  deleteComment() {
+    this.postService.deleteComment(this.comment.id).subscribe(_ => this.onUpdate.emit(true))
 
-
+  }
 }

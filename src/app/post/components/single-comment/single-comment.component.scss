@@ -6,10 +6,26 @@
   background-color: rgba(purple, 0.2);
 }
 
+.edit-btn{
+  background-color: rgba(darkblue, 0.2);
+}
+
+.delete-btn{
+  background-color: rgba(rgb(230, 78, 8), 0.2);
+}
+
+
+
 .singleComment {
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
+
+  &__actions{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+  }
 }
 
 button {

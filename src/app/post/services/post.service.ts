@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, tap, throwError } from 'rxjs';
-import {NewPost} from '../interfaces/posts.interface';
+import { catchError, Observable, Subject, tap, throwError } from 'rxjs';
+import { NewPost } from '../interfaces/posts.interface';
 import { Icoment, Ipost } from '../interfaces/user.interface';
 
 @Injectable({
@@ -10,6 +10,8 @@ import { Icoment, Ipost } from '../interfaces/user.interface';
 })
 export class PostService {
   private postsURL: string = 'https://luciano-cardozo-endpoint.herokuapp.com';
+
+  subjectNotifier: Subject<null> = new Subject<null>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -25,7 +27,7 @@ export class PostService {
       .pipe(catchError(this.errorHandler));
   }
 
-  getPostComments(id: number): Observable<Icoment[]> {
+  getPostComments(id: number): Observable<Icoment[]> {   
     return this.http
       .get<Icoment[]>(`${this.postsURL}/comments?postId=${id}`)
       .pipe(catchError(this.errorHandler));
@@ -35,12 +37,19 @@ export class PostService {
     return throwError('Content not found');
   }
 
+  addComment(data: NewPost) {
+    return this.http.post(`${this.postsURL}/comments`, data);
+  }
 
-  addPost(data: NewPost) {
-    return this.http
-      .post(`${this.postsURL}/comments`, data).pipe(
-        tap(resp => console.log(resp))
-    )
+  editComment(data: NewPost, id: number) {
+    return this.http.put(`${this.postsURL}/comments/${id}`, data);
+  }
 
+  deleteComment(id: number) {
+    return this.http.delete(`${this.postsURL}/comments/${id}`);
+  }
+
+  notifyAboutChange() {
+    this.subjectNotifier.next(null);
   }
 }

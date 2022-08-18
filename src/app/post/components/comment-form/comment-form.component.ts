@@ -24,7 +24,7 @@ export class CommentFormComponent implements OnInit {
     private authService: AuthService,
     private postService: PostService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.comment ? (this.isEditing = true) : (this.isEditing = false);
@@ -33,18 +33,33 @@ export class CommentFormComponent implements OnInit {
 
   private initForm() {
     this.commentsForm = this.fb.group({
-      name: ['', [Validators.required]],
-      body: ['', [Validators.required, Validators.maxLength(200)]],
+      name: ["", [Validators.required, Validators.pattern(/[\S]/)]],
+      body: ["", [Validators.required, Validators.maxLength(200), Validators.pattern(/[\S]/)]],
     });
 
     if (this.isEditing) {
-      console.log('pasa por aca');
-      this.commentsForm.controls['name'].reset(this.comment!.name);
-      this.commentsForm.controls['body'].reset(this.comment!.body);
+      this.resetWithInitialValues();
     }
   }
 
+  isValidField(name: string) {
+    return (
+      this.commentsForm.controls[name].errors &&
+      this.commentsForm.controls[name].touched
+    );
+  }
+
   emitir() {
+    if (this.commentsForm.invalid) return
+
+    this.isEditing
+      ? this.editComment()
+      : this.addComment();
+
+    this.closeModal();
+  }
+
+  private addComment() {
     const data: NewPost = {
       name: this.commentsForm.controls['name'].value,
       body: this.commentsForm.controls['body'].value,
@@ -52,20 +67,34 @@ export class CommentFormComponent implements OnInit {
       postId: this.postID!,
     };
 
-    this.postService.addPost(data).subscribe();
-
+    this.postService.addComment(data).subscribe();
     this.onEmit.emit(new Date());
-    this.commentsForm.reset();
-    this.closeModal();
+  }
+
+  private editComment() {
+    const commentID = this.comment!.id
+    const data: NewPost = {
+      name: this.commentsForm.controls['name'].value,
+      body: this.commentsForm.controls['body'].value,
+      email: this.authService.getUserLogued!.email!,
+      postId: this.comment!.postId,
+    };
+
+    this.postService.editComment(data, commentID).subscribe();
   }
 
   closeModal() {
     if (this.isEditing) {
-      this.commentsForm.controls['name'].reset(this.comment!.name);
-      this.commentsForm.controls['body'].reset(this.comment!.body);
+      this.resetWithInitialValues();
     } else {
       this.commentsForm.reset();
     }
+    this.postService.notifyAboutChange();
     this.oncloseModal.emit(false);
+  }
+
+  private resetWithInitialValues() {
+    this.commentsForm.controls['name'].reset(this.comment!.name);
+    this.commentsForm.controls['body'].reset(this.comment!.body);
   }
 }

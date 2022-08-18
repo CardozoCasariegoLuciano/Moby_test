@@ -1,16 +1,27 @@
 <div class="singleComment">
   <p>{{ comment | userName: isUpper }}</p>
   <p>{{ comment.body }}</p>
-  <button
-    (click)="changeCase()"
-    [ngClass]="{ btn_Uppercase: isUpper, btn_Lowercase: !isUpper }" >
-    {{!isUpper ? "To UpperCase" : "To LoweCase"}}
-  </button>
-  <button class="emit-btn" (click)="showDialog()">New comment</button>
+  <div class="singleComment__actions">
+
+    <button
+      (click)="changeCase()"
+      [ngClass]="{ btn_Uppercase: isUpper, btn_Lowercase: !isUpper }"
+    >
+      {{ !isUpper ? "To UpperCase" : "To LoweCase" }}
+    </button>
+
+    <button *ngIf="canDo()" class="edit-btn" (click)="showDialog()">
+      Edit
+    </button>
+
+    <button *ngIf="canDo()" class="delete-btn" (click)="deleteComment()">
+      Delete
+    </button>
+  </div>
 </div>
 
 <app-comment-form
   [showForm]="displayBasic"
   (oncloseModal)="closeModal($event)"
-  [comment] = "comment"
+  [comment]="comment"
 ></app-comment-form>

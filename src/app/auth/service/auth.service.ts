@@ -11,10 +11,9 @@ import { IuserRegister } from '../interfaces/register.interface';
 })
 export class AuthService {
   baseURL = 'https://luciano-cardozo-endpoint.herokuapp.com/users';
-  /* baseURL = "http://localhost:3000" */
   private userLogued: Iauth | undefined;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   hasSessionActive(): Observable<boolean> {
 
@@ -24,11 +23,12 @@ export class AuthService {
     }
 
     return this.http.get<Iauth>(`${this.baseURL}/${userID}`)
-    .pipe(
-      map(auth => { 
-        this.userLogued = auth;       
-        return true })
-    )    
+      .pipe(
+        map(auth => {
+          this.userLogued = auth;
+          return true
+        })
+      )
   }
 
   get getUserLogued() {
@@ -46,7 +46,7 @@ export class AuthService {
           return true;
         }
         return false;
-      }),     
+      }),
     );
   }
 
@@ -66,7 +66,7 @@ export class AuthService {
         } else {
           return false;
         }
-      }),     
+      }),
     );
   }
 
@@ -76,7 +76,7 @@ export class AuthService {
         this.userLogued = user;
         localStorage.setItem('userID', user.id.toString());
         this.router.navigate(['/posts']);
-      }),      
+      }),
     );
   }
 
