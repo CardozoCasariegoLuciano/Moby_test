@@ -16,11 +16,8 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   hasSessionActive(): Observable<boolean> {
-
     const userID = localStorage.getItem("userID")
-    if (!userID) {
-      return of(false)
-    }
+    if (!userID) return of(false)
 
     return this.http.get<Iauth>(`${this.baseURL}/${userID}`)
       .pipe(
@@ -31,8 +28,7 @@ export class AuthService {
       )
   }
 
-  get getUserLogued() {
-    //console.log("getter: ",this.userLogued)
+  get getUserLogued() {    
     return { ...this.userLogued };
   }
 
