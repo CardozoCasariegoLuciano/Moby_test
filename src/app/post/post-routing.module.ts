@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import {PostDetailComponent} from './pages/post-detail/post-detail.component';
-import {PostListComponent} from './pages/post-list/post-list.component';
+import { PostDetailComponent } from './pages/post-detail/post-detail.component';
+import { PostListComponent } from './pages/post-list/post-list.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
       {
-        path: "",
-        redirectTo: "posts",
-        pathMatch: "full"
+        path: '',
+        redirectTo: 'posts',
+        pathMatch: 'full',
       },
       {
         path: 'posts',
@@ -22,9 +21,9 @@ const routes: Routes = [
         component: PostDetailComponent,
       },
       {
-        path: "**",
-        redirectTo:"404"
-      }
+        path: '**',
+        redirectTo: '404',
+      },
     ],
   },
 ];

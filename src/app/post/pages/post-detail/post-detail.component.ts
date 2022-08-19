@@ -25,12 +25,12 @@ export class PostDetailComponent implements OnInit {
 
   private initPost() {
     this.activeRoute.params
-      .pipe(switchMap(({id}) => this.postService.getPostByID(id)))
+      .pipe(switchMap(({ id }) => this.postService.getPostByID(id)))
       .subscribe(
         (data) => {
           this.post = data;
         },
-        (err) => this.router.navigate(['404'])
+        () => this.router.navigate(['404'])
       );
   }
 

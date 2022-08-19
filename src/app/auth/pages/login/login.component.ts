@@ -16,11 +16,7 @@ export class LoginComponent implements OnInit {
     message: '',
   };
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -32,7 +28,9 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required]],
     });
 
-    this.loginForm.valueChanges.subscribe(_ => this.loginError.showMsg = false)
+    this.loginForm.valueChanges.subscribe(
+      (_) => (this.loginError.showMsg = false)
+    );
   }
 
   isValidField(name: string) {
@@ -56,7 +54,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(data).subscribe((resp) => {
       if (!resp) {
         this.loginError.showMsg = true;
-        this.loginError.message = "Wrong email or password"
+        this.loginError.message = 'Wrong email or password';
       }
     });
   }

@@ -7,7 +7,6 @@ import {
   Router,
   RouterStateSnapshot,
   UrlSegment,
-  UrlTree,
 } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { AuthService } from '../service/auth.service';
@@ -19,8 +18,8 @@ export class AuthGuard implements CanActivate, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.authService.hasSessionActive().pipe(
       tap((isAuth) => {
@@ -31,7 +30,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     );
   }
 
-  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
+  canLoad(_route: Route, _segments: UrlSegment[]): Observable<boolean> {
     return this.authService.hasSessionActive().pipe(
       tap((isAuth) => {
         if (!isAuth) {

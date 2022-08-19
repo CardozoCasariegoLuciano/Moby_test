@@ -8,9 +8,7 @@
 </p-menubar>
 
 <div *ngIf="displayBasic">
-  <app-edit-user-form 
-  (oncloseModal)="closeModal($event)" 
-  [userData]="data"
-  >
+  <app-edit-user-form (oncloseModal)="closeModal($event)" [userData]="data">
   </app-edit-user-form>
 </div>
+

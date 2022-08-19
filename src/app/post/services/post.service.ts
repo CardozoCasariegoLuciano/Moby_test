@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, Observable, Subject, tap, throwError } from 'rxjs';
+import { catchError, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NewPost } from '../interfaces/posts.interface';
 import { Icoment, Ipost } from '../interfaces/user.interface';
@@ -14,7 +13,7 @@ export class PostService {
 
   subjectNotifier: Subject<null> = new Subject<null>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   getPosts(): Observable<Ipost[]> {
     return this.http
@@ -28,13 +27,13 @@ export class PostService {
       .pipe(catchError(this.errorHandler));
   }
 
-  getPostComments(id: number): Observable<Icoment[]> {   
+  getPostComments(id: number): Observable<Icoment[]> {
     return this.http
       .get<Icoment[]>(`${this.postsURL}/comments?postId=${id}`)
       .pipe(catchError(this.errorHandler));
   }
 
-  errorHandler(err: HttpErrorResponse) {
+  errorHandler(_err: HttpErrorResponse) {
     return throwError('Content not found');
   }
 

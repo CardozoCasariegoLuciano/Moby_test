@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {AuthGuard} from './auth/guards/auth-guard';
+import { AuthGuard } from './auth/guards/auth-guard';
 import { UserLoguedGuard } from './auth/guards/user-logued.guard';
 import { ErrorPageComponent } from './shared/pages/error-page/error-page.component';
 
 const routes: Routes = [
   {
-    path: "",
-    redirectTo:"auth/login",
-    pathMatch: "full"
+    path: '',
+    redirectTo: 'auth/login',
+    pathMatch: 'full',
   },
   {
-    path: "auth",
-    loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule),
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
     canLoad: [UserLoguedGuard],
     canActivate: [UserLoguedGuard],
   },
   {
-    path: "",
-    loadChildren: () => import("./post/post.module").then(m => m.PostModule),
+    path: '',
+    loadChildren: () => import('./post/post.module').then((m) => m.PostModule),
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],
   },
@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo:"404"
+    redirectTo: '404',
   },
 ];
 

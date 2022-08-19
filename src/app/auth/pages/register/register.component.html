@@ -25,7 +25,9 @@
           formControlName="username"
         />
       </span>
-      <p *ngIf="isValidField('username')" class="error-msg">Username is required</p>
+      <p *ngIf="isValidField('username')" class="error-msg">
+        Username is required
+      </p>
     </div>
 
     <div class="auth-form__input">
@@ -76,6 +78,8 @@
       <p-button type="submit" label="Register"></p-button>
     </div>
 
-    <p *ngIf="registerError.showMsg" class="error-msg-box">{{registerError.message}}</p>
+    <p *ngIf="registerError.showMsg" class="error-msg-box">
+      {{ registerError.message }}
+    </p>
   </form>
 </div>

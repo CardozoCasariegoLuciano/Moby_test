@@ -1,7 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/auth/service/auth.service';
 import { Icoment } from '../../interfaces/user.interface';
 import { PostService } from '../../services/post.service';
 
@@ -16,11 +21,12 @@ export class CommentsComponent implements OnInit, OnDestroy {
   comments: Icoment[] = [];
   displayBasic: boolean = false;
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService) {}
 
-  notifierSubscription: Subscription = this.postService.subjectNotifier.subscribe(notified => {
-    this.initComents();
-  });
+  notifierSubscription: Subscription =
+    this.postService.subjectNotifier.subscribe(() => {
+      this.initComents();
+    });
 
   ngOnDestroy(): void {
     this.notifierSubscription.unsubscribe();
@@ -31,17 +37,15 @@ export class CommentsComponent implements OnInit, OnDestroy {
   }
 
   private initComents() {
-    this.postService
-      .getPostComments(this.postID)
-      .subscribe((resp) => {
-        this.comments = []
-        this.comments = resp
-      });
+    this.postService.getPostComments(this.postID).subscribe((resp) => {
+      this.comments = [];
+      this.comments = resp;
+    });
   }
 
   sendEmmitd(value: Date) {
     this.onEmit.emit(value);
-    this.update()
+    this.update();
   }
 
   showDialog() {

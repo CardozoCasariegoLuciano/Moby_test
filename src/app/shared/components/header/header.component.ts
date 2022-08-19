@@ -10,15 +10,14 @@ import { Iauth } from '../../../auth/interfaces/auth.interface';
 })
 export class HeaderComponent implements OnInit {
   displayBasic: boolean = false;
-  items: MenuItem[] = [];   
-  data!: Iauth
+  items: MenuItem[] = [];
+  data!: Iauth;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.initMenuItems();   
-    
-  } 
+    this.initMenuItems();
+  }
 
   private initMenuItems() {
     this.items = [
@@ -46,21 +45,20 @@ export class HeaderComponent implements OnInit {
     ];
   }
 
-  showDialog(){
-    this.displayBasic = true
-    this.data = this.userLogued    
+  showDialog() {
+    this.data = this.userLogued;
+    this.displayBasic = true;
   }
 
   closeModal(_: boolean) {
     this.displayBasic = false;
   }
 
-  get userLogued(){
+  get userLogued() {
     return this.authService.getUserLogued;
-  }  
+  }
 
   logOut() {
     this.authService.logOut();
   }
-
 }

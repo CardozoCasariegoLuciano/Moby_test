@@ -1,25 +1,24 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Iauth } from 'src/app/auth/interfaces/auth.interface';
-import { AuthService } from 'src/app/auth/service/auth.service';
 
 @Component({
   selector: 'app-edit-user-form',
   templateUrl: './edit-user-form.component.html',
-  styleUrls: ['./edit-user-form.component.scss']
+  styleUrls: ['./edit-user-form.component.scss'],
 })
-export class EditUserFormComponent implements OnInit{
+export class EditUserFormComponent implements OnInit {
   editUserForm!: FormGroup;
   showExtraField: boolean = false;
-  areGeoEquals: boolean = true;  
-  @Input() userData: Iauth | undefined
-  @Output() oncloseModal: EventEmitter<boolean> = new EventEmitter(); 
+  areGeoEquals: boolean = true;
+  @Input() userData: Iauth | undefined;
+  @Output() oncloseModal: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
- 
+  constructor(private fb: FormBuilder) {}
+
   ngOnInit(): void {
-    this.initForm();      
-    this.setDefaultValues()
+    this.initForm();
+    this.setDefaultValues();
   }
 
   private initForm() {
@@ -46,14 +45,12 @@ export class EditUserFormComponent implements OnInit{
         catchPhrase: [null],
         bs: [null],
       }),
-    });   
-
+    });
   }
 
   setDefaultValues() {
     this.editUserForm.controls['name'].reset(this.userData!.name);
     this.editUserForm.controls['username'].reset(this.userData!.username);
-
     this.editUserForm.get('phone')?.reset(this.userData!.phone);
     this.editUserForm.get('webSite')?.reset(this.userData!.website);
 
@@ -100,9 +97,9 @@ export class EditUserFormComponent implements OnInit{
     };
 
     data = this.addFields(data);
- 
-    this.authService.editUser(data).subscribe();
-    this.closeModal()
+
+    /*this.authService.editUser(data).subscribe();*/
+    /*this.closeModal();*/
   }
 
   isValidField(name: string) {
@@ -166,7 +163,7 @@ export class EditUserFormComponent implements OnInit{
     return true;
   }
 
-  addFields(data: Iauth, group?: FormGroup): Iauth {
+  addFields(data: Iauth): Iauth {
     const pass = this.editUserForm.controls['newPasswords'].value;
     const phone = this.editUserForm.controls['phone'].value;
     const webSite = this.editUserForm.controls['webSite'].value;
@@ -254,21 +251,6 @@ export class EditUserFormComponent implements OnInit{
       }
       data.company.bs = bs;
     }
-
-    //const controls = this.editUserForm.controls;
-
-    //Object.keys(controls).forEach((key) => {
-    //const abstractControll = controls[key];
-    //console.log(abstractControll);
-
-    //if (!(abstractControll instanceof FormGroup)) {
-    //if (abstractControll.value != null) {
-    ////data[key] = value
-    //console.log(key, abstractControll.value);
-    //}
-    //}
-    //});
-
     return data;
   }
 
@@ -276,10 +258,8 @@ export class EditUserFormComponent implements OnInit{
     this.showExtraField = !this.showExtraField;
   }
 
-  closeModal() {     
+  closeModal() {
     this.editUserForm.reset();
     this.oncloseModal.emit(false);
   }
-
-  
 }

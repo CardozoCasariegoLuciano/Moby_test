@@ -34,6 +34,8 @@
       <p-button type="submit" label="login"></p-button>
     </div>
 
-    <p *ngIf="loginError.showMsg" class="error-msg-box">{{loginError.message}}</p>
+    <p *ngIf="loginError.showMsg" class="error-msg-box">
+      {{ loginError.message }}
+    </p>
   </form>
 </div>
