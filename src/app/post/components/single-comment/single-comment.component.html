@@ -2,7 +2,6 @@
   <p>{{ comment | userName: isUpper }}</p>
   <p>{{ comment.body }}</p>
   <div class="singleComment__actions">
-
     <button
       (click)="changeCase()"
       [ngClass]="{ btn_Uppercase: isUpper, btn_Lowercase: !isUpper }"
@@ -23,5 +22,6 @@
 <app-comment-form
   [showForm]="displayBasic"
   (oncloseModal)="closeModal($event)"
+  (onEmit)="sendEmmitd()"
   [comment]="comment"
 ></app-comment-form>

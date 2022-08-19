@@ -24,7 +24,7 @@ export class CommentFormComponent implements OnInit {
     private authService: AuthService,
     private postService: PostService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.comment ? (this.isEditing = true) : (this.isEditing = false);
@@ -33,8 +33,15 @@ export class CommentFormComponent implements OnInit {
 
   private initForm() {
     this.commentsForm = this.fb.group({
-      name: ["", [Validators.required, Validators.pattern(/[\S]/)]],
-      body: ["", [Validators.required, Validators.maxLength(200), Validators.pattern(/[\S]/)]],
+      name: ['', [Validators.required, Validators.pattern(/[\S]/)]],
+      body: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(200),
+          Validators.pattern(/[\S]/),
+        ],
+      ],
     });
 
     if (this.isEditing) {
@@ -50,13 +57,12 @@ export class CommentFormComponent implements OnInit {
   }
 
   emitir() {
-    if (this.commentsForm.invalid) return
+    if (this.commentsForm.invalid) return;
 
-    this.isEditing
-      ? this.editComment()
-      : this.addComment();
+    this.isEditing ? this.editComment() : this.addComment();
 
     this.closeModal();
+    this.postService.notifyAboutChange();
   }
 
   private addComment() {
@@ -72,7 +78,7 @@ export class CommentFormComponent implements OnInit {
   }
 
   private editComment() {
-    const commentID = this.comment!.id
+    const commentID = this.comment!.id;
     const data: NewPost = {
       name: this.commentsForm.controls['name'].value,
       body: this.commentsForm.controls['body'].value,
@@ -81,6 +87,7 @@ export class CommentFormComponent implements OnInit {
     };
 
     this.postService.editComment(data, commentID).subscribe();
+    this.onEmit.emit(new Date());
   }
 
   closeModal() {
@@ -89,7 +96,6 @@ export class CommentFormComponent implements OnInit {
     } else {
       this.commentsForm.reset();
     }
-    this.postService.notifyAboutChange();
     this.oncloseModal.emit(false);
   }
 

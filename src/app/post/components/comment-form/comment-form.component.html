@@ -15,9 +15,10 @@
             pInputText
           />
           <label for="float-input">Title</label>
-         
         </span>
-        <small *ngIf="isValidField('name')" class="p-error block">Title is required</small>
+        <small *ngIf="isValidField('name')" class="p-error block"
+          >Title is required</small
+        >
       </div>
 
       <div class="auth-form__input">
@@ -31,7 +32,9 @@
           ></textarea>
           <label for="float-input">Body</label>
         </span>
-        <small *ngIf="isValidField('body')" class="p-error block">Body is requiere | max 200</small>
+        <small *ngIf="isValidField('body')" class="p-error block"
+          >Body is requiere | max 200</small
+        >
       </div>
     </form>
   </div>

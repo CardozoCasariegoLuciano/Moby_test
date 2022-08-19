@@ -41,15 +41,15 @@ export class CommentsComponent implements OnInit, OnDestroy {
 
   sendEmmitd(value: Date) {
     this.onEmit.emit(value);
+    this.update()
   }
 
   showDialog() {
     this.displayBasic = true;
   }
 
-  closeModal(event: boolean) {
-    this.displayBasic = event;
-    this.update()
+  closeModal(_: boolean) {
+    this.displayBasic = false;
   }
 
   update() {

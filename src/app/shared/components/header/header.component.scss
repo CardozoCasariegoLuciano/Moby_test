@@ -3,21 +3,41 @@
   margin: 0px 20px 0px 10px;
 }
 
-.logo{
+.logo {
   font-size: 20px;
   margin: 0px 0px 0px 20px;
 }
 
-.layout-wrapper .layout-menu li a > .myclass{
+.layout-wrapper .layout-menu li a > .myclass {
   margin-left: auto;
 }
 
 :host ::ng-deep p-menubarsub {
-    width: 100%;
+  width: 100%;
 }
 
-
-p-menubar{
+p-menubar {
   position: fixed;
   width: 100%;
 }
+
+.edit-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 30px 0px 10px 0px;
+  width: 100%;
+  max-width: 450px;
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+}
+

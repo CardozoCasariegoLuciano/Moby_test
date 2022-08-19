@@ -14,7 +14,10 @@ export class SingleCommentComponent {
   isUpper: boolean = false;
   displayBasic: boolean = false;
 
-  constructor(private authService: AuthService, private postService: PostService) { }
+  constructor(
+    private authService: AuthService,
+    private postService: PostService
+  ) {}
 
   get userLogued() {
     return this.authService.getUserLogued;
@@ -34,13 +37,17 @@ export class SingleCommentComponent {
     this.displayBasic = true;
   }
 
-  closeModal(event: boolean) {
-    this.displayBasic = event;
-    this.onUpdate.emit(true)
+  sendEmmitd() {
+    this.onUpdate.emit(true);
+  }
+
+  closeModal(_: boolean) {
+    this.displayBasic = false;
   }
 
   deleteComment() {
-    this.postService.deleteComment(this.comment.id).subscribe(_ => this.onUpdate.emit(true))
-
+    this.postService
+      .deleteComment(this.comment.id)
+      .subscribe((_) => this.onUpdate.emit(true));
   }
 }
