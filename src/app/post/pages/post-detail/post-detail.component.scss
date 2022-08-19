@@ -18,21 +18,6 @@
   left: 25px;
   height: 40px;
   width: 40px;
-  background-color: v.$main-color;
-  color: v.$main-bg;
-  border-radius: 100%;
-
-  a {
-    font-family: "Times New Roman", "Times", "serif";
-    margin-left: 6px;
-    font-size: 40px;
-    line-height: 41px;
-    text-decoration: none;
-
-    &:hover {
-      color: rgba($color: green, $alpha: 1);
-    }
-  }
 }
 
 .info-section {

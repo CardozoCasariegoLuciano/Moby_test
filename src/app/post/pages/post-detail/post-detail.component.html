@@ -10,7 +10,14 @@
       <h2>{{ post.title | titlecase }}</h2>
 
       <div class="back-btn">
-        <a routerLink="/posts"> < </a>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-arrow-left"
+          class="p-button-rounded  p-button-secondary"
+          routerLink="/posts"
+        ></button>
       </div>
 
       <p class="content">{{ post.body }}</p>

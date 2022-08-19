@@ -1,12 +1,12 @@
 <div class="singleComment">
   <p>{{ comment | userName: isUpper }}</p>
-  <p>{{ comment.body }}</p>
+  <p class="singleComment__body">{{ comment.body }}</p>
   <div class="singleComment__actions">
     <button
       (click)="changeCase()"
       [ngClass]="{ btn_Uppercase: isUpper, btn_Lowercase: !isUpper }"
     >
-      {{ !isUpper ? "To UpperCase" : "To LoweCase" }}
+      {{ !isUpper ? "To UpperCase" : "To LowerCase" }}
     </button>
 
     <button *ngIf="canDo()" class="edit-btn" (click)="showDialog()">

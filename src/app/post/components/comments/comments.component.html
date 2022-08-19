@@ -3,7 +3,10 @@
 
   <div *ngIf="comments.length > 0; else spiner">
     <div class="comment" *ngFor="let comment of comments">
-      <app-single-comment [comment]="comment" (onUpdate)="update()"></app-single-comment>
+      <app-single-comment
+        [comment]="comment"
+        (onUpdate)="update()"
+      ></app-single-comment>
     </div>
   </div>
 
