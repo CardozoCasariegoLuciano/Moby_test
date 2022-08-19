@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   }
 
   get showHeader() {
-    const value = this.route != '/auth/login' && this.route != '/auth/register';
+    const value = this.route != '/auth/login' && this.route != '/auth/register' && this.route != '/';
     return value;
   }
 }
