@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Iauth } from 'src/app/auth/interfaces/auth.interface';
+import { AuthService } from '../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-edit-user-form',
@@ -12,9 +13,9 @@ export class EditUserFormComponent implements OnInit {
   showExtraField: boolean = false;
   areGeoEquals: boolean = true;
   @Input() userData: Iauth | undefined;
-  @Output() oncloseModal: EventEmitter<boolean> = new EventEmitter();
+  @Output() oncloseModal: EventEmitter<boolean> = new EventEmitter();  
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -85,7 +86,7 @@ export class EditUserFormComponent implements OnInit {
     this.editUserForm.get('company.bs')?.reset(this.userData!.company?.bs);
   }
 
-  editData() {
+  editData() {    
     if (this.editUserForm.invalid) return;
     if (!this.arePasswordsOk()) return;
     if (!this.isGeoOk()) return;
@@ -98,8 +99,8 @@ export class EditUserFormComponent implements OnInit {
 
     data = this.addFields(data);
 
-    /*this.authService.editUser(data).subscribe();*/
-    /*this.closeModal();*/
+    this.authService.editUser(data).subscribe();
+    this.closeModal();
   }
 
   isValidField(name: string) {

@@ -86,7 +86,7 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
   }
 
-  editUser(data: Iauth) {
+  editUser(data: Iauth) {    
     return this.http
       .patch<Iauth>(`${this.baseURL}/users/${data.id}`, data)
       .pipe(

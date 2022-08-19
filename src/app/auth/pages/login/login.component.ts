@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
 
   private initForm() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
 
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  login() {
+  login() {    
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
