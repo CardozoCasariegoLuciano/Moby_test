@@ -2,7 +2,8 @@
 
 .card {
   background-color: rgba($color: green, $alpha: 0.2);
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   margin: auto;
   margin-top: 80px;
   padding: 30px;
