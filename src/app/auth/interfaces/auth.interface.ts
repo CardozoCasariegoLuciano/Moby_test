@@ -1,5 +1,5 @@
 export interface Iauth {
-    id:       number;
+    id?:       number;
     name?:     string;
     username?: string;
     email?:    string;
@@ -11,20 +11,20 @@ export interface Iauth {
 }
 
 export interface Address {
-    street:  string;
-    suite:   string;
-    city:    string;
-    zipcode: string;
-    geo:     Geo;
+    street?:  string;
+    suite?:   string;
+    city?:    string;
+    zipcode?: string;
+    geo?:     Geo;
 }
 
 export interface Geo {
-    lat: string;
-    lng: string;
+    lat?: string;
+    lng?: string;
 }
 
 export interface Company {
-    name:        string;
-    catchPhrase: string;
-    bs:          string;
+    name?:        string;
+    catchPhrase?: string;
+    bs?:          string;
 }

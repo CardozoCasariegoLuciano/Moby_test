@@ -38,7 +38,7 @@ export class AuthService {
       map((user) => {
         if (this.isValidLogin(user, data.password)) {
           this.userLogued = user[0];
-          localStorage.setItem('userID', user[0].id.toString());
+          localStorage.setItem('userID', user[0].id!.toString());
           this.router.navigate(['/posts']);
           return true;
         }
@@ -71,7 +71,7 @@ export class AuthService {
     return this.http.post<Iauth>(`${this.baseURL}/users`, data).pipe(
       tap((user) => {
         this.userLogued = user;
-        localStorage.setItem('userID', user.id.toString());
+        localStorage.setItem('userID', user.id!.toString());
         this.router.navigate(['/posts']);
       }),
     );
