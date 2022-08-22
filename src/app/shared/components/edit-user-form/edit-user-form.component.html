@@ -114,7 +114,6 @@
     <div class="edit-form__extra-fields" *ngIf="showExtraField">
       <h5>Change adress</h5>
 
-      <div formGroupName="address">
         <div class="edit-form__input">
           <span class="p-input-icon-left">
             <i class="pi pi-map-marker"></i>
@@ -164,7 +163,6 @@
         </div>
 
         <h5>Change geolocation</h5>
-        <div formGroupName="geo">
           <div class="edit-form__input">
             <span class="p-input-icon-left">
               <i class="pi pi-map-marker"></i>
@@ -194,11 +192,8 @@
               Both are required</small
             >
           </div>
-        </div>
-      </div>
 
       <h5>Change company</h5>
-      <div formGroupName="company">
         <div class="edit-form__input">
           <span class="p-input-icon-left">
             <i class="pi pi-building"></i>
@@ -206,7 +201,7 @@
               type="text"
               pInputText
               placeholder="Company name"
-              formControlName="name"
+              formControlName="companyName"
             />
           </span>
         </div>
@@ -234,7 +229,6 @@
             />
           </span>
         </div>
-      </div>
     </div>
   </form>
 
