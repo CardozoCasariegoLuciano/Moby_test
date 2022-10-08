@@ -14,11 +14,18 @@ export class AuthService {
   baseURL = environment.baseURL;
   private userLogued: Iauth | undefined;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    const user = localStorage.getItem('userLogued');
+    if (user) {
+      this.userLogued = JSON.parse(user);
+    }
+  }
 
   hasSessionActive(): Observable<boolean> {
-    const userID = localStorage.getItem('userID');
-    if (!userID) return of(false);
+    const user = localStorage.getItem('userLogued');
+    if (!user) return of(false);
+
+    const userID = JSON.parse(user).id;
 
     return this.http.get<Iauth>(`${this.baseURL}/users/${userID}`).pipe(
       map((auth) => {
@@ -39,7 +46,7 @@ export class AuthService {
         map((user) => {
           if (this.isValidLogin(user, data.password)) {
             this.userLogued = user[0];
-            localStorage.setItem('userID', user[0].id!.toString());
+            localStorage.setItem('userLogued', JSON.stringify(user[0]));
             this.router.navigate(['/posts']);
             return true;
           }
@@ -74,25 +81,26 @@ export class AuthService {
     return this.http.post<Iauth>(`${this.baseURL}/users`, data).pipe(
       tap((user) => {
         this.userLogued = user;
-        localStorage.setItem('userID', user.id!.toString());
+        localStorage.setItem('userLogued', JSON.stringify(user));
         this.router.navigate(['/posts']);
       })
     );
   }
 
   logOut() {
-    localStorage.removeItem('userID');
+    localStorage.removeItem('userLogued');
     this.userLogued = undefined;
     this.router.navigate(['/auth/login']);
   }
 
-  editUser(data: Iauth) {    
-    return this.http
+  editUser(data: Iauth): void {
+    this.http
       .patch<Iauth>(`${this.baseURL}/users/${data.id}`, data)
       .pipe(
         tap((user) => {
           this.userLogued = user;
         })
-      );
+      )
+      .subscribe();
   }
 }

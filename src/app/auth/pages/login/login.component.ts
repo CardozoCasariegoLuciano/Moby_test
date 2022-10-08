@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { emailPattern } from 'src/app/shared/customValidators/regex';
 import { IuserLogin } from '../../interfaces/login.interface';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss', '../common-styles.scss'],
+  styleUrls: ['../common-styles.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  loginRequest!: Subscription
   loginError = {
     showMsg: false,
     message: '',
@@ -24,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   private initForm() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.pattern(emailPattern)]],
       password: ['', [Validators.required]],
     });
 
@@ -40,7 +42,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  login() {    
+  login() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -51,7 +53,8 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.controls['password'].value,
     };
 
-    this.authService.login(data).subscribe((resp) => {
+    this.loginRequest && this.loginRequest.unsubscribe();
+    this.loginRequest = this.authService.login(data).subscribe((resp) => {
       if (!resp) {
         this.loginError.showMsg = true;
         this.loginError.message = 'Wrong email or password';

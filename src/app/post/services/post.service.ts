@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { NewPost } from '../interfaces/posts.interface';
+import { NewComment } from '../interfaces/posts.interface';
 import { Icoment, Ipost } from '../interfaces/user.interface';
 
 @Injectable({
@@ -10,7 +10,6 @@ import { Icoment, Ipost } from '../interfaces/user.interface';
 })
 export class PostService {
   private postsURL: string = environment.baseURL;
-
   subjectNotifier: Subject<null> = new Subject<null>();
 
   constructor(private http: HttpClient) {}
@@ -34,18 +33,18 @@ export class PostService {
   }
 
   errorHandler(_err: HttpErrorResponse) {
-    return throwError('Content not found');
+    return throwError(() => 'Content not found');
   }
 
-  addComment(data: NewPost) {
-    return this.http.post(`${this.postsURL}/comments`, data);
+  addComment(data: NewComment): void {
+    this.http.post(`${this.postsURL}/comments`, data).subscribe();
   }
 
-  editComment(data: NewPost, id: number) {
-    return this.http.put(`${this.postsURL}/comments/${id}`, data);
+  editComment(data: NewComment, id: number): void {
+    this.http.put(`${this.postsURL}/comments/${id}`, data).subscribe();
   }
 
-  deleteComment(id: number) {
+  deleteComment(id: number): Observable<Object> {
     return this.http.delete(`${this.postsURL}/comments/${id}`);
   }
 

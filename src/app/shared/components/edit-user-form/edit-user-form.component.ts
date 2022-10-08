@@ -19,46 +19,27 @@ export class EditUserFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.setDefaultValues();
   }
 
   private initForm() {
     this.editUserForm = this.fb.group({
-      name: ['', [Validators.required]],
-      username: ['', [Validators.required]],
+      name: [this.userData!.name, [Validators.required]],
+      username: [this.userData!.username, [Validators.required]],
       password: [''],
       newPasswords: [''],
       repeatNewPassword: [''],
-      phone: [''],
-      webSite: [''],
-      street: [''],
-      suite: [''],
-      city: [''],
-      zipcode: [''],
-      lat: [''],
-      lng: [''],
-      companyName: [''],
-      catchPhrase: [''],
-      bs: [''],
+      phone: [this.userData!.phone],
+      webSite: [this.userData!.website],
+      street: [this.userData!.address?.street],
+      suite: [this.userData!.address?.suite],
+      city: [this.userData!.address?.city],
+      zipcode: [this.userData!.address?.zipcode],
+      lat: [this.userData!.address?.geo?.lat],
+      lng: [this.userData!.address?.geo?.lng],
+      companyName: [this.userData!.company?.name],
+      catchPhrase: [this.userData!.company?.catchPhrase],
+      bs: [this.userData!.company?.bs],
     });
-  }
-
-  setDefaultValues() {
-    this.editUserForm.get('name')?.reset(this.userData!.name);
-    this.editUserForm.get('username')?.reset(this.userData!.username);
-    this.editUserForm.get('phone')?.reset(this.userData!.phone);
-    this.editUserForm.get('webSite')?.reset(this.userData!.website);
-    this.editUserForm.get('street')?.reset(this.userData!.address?.street);
-    this.editUserForm.get('suite')?.reset(this.userData!.address?.suite);
-    this.editUserForm.get('zipcode')?.reset(this.userData!.address?.zipcode);
-    this.editUserForm.get('city')?.reset(this.userData!.address?.city);
-    this.editUserForm.get('lat')?.reset(this.userData!.address?.geo?.lat);
-    this.editUserForm.get('lng')?.reset(this.userData!.address?.geo?.lng);
-    this.editUserForm.get('companyName')?.reset(this.userData!.company?.name);
-    this.editUserForm
-      .get('catchPhrase')
-      ?.reset(this.userData!.company?.catchPhrase);
-    this.editUserForm.get('bs')?.reset(this.userData!.company?.bs);
   }
 
   editData() {
@@ -95,7 +76,7 @@ export class EditUserFormComponent implements OnInit {
       data.password = password;
     }
 
-    this.authService.editUser(data).subscribe();
+    this.authService.editUser(data);
     this.closeModal();
   }
 
@@ -139,8 +120,8 @@ export class EditUserFormComponent implements OnInit {
     const lat = this.editUserForm.get('lat')?.value;
     const lng = this.editUserForm.get('lng')?.value;
 
-    const onlyLat = lat != "" && lng == "";
-    const onlyLng = lng != "" && lat == "";
+    const onlyLat = lat != '' && lng == '';
+    const onlyLng = lng != '' && lat == '';
 
     if (onlyLng) {
       this.areGeoEquals = false;

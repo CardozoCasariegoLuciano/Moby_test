@@ -48,6 +48,6 @@ export class SingleCommentComponent {
   deleteComment() {
     this.postService
       .deleteComment(this.comment.id)
-      .subscribe((_) => this.onUpdate.emit(true));
+      .subscribe((_) => this.onUpdate.emit(true))
   }
 }

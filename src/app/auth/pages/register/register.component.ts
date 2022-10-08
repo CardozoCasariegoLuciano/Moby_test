@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { emailPattern } from 'src/app/shared/customValidators/regex';
 import { IuserRegister } from '../../interfaces/register.interface';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss', '../common-styles.scss'],
+  styleUrls: ['../common-styles.scss'],
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
       username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.pattern(emailPattern)]],
       password: ['', [Validators.required]],
       repeatPassword: ['', [Validators.required]],
     });

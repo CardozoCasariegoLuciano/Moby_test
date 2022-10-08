@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanLoad,
-  Route,
-  Router,
-  RouterStateSnapshot,
-  UrlSegment,
-} from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { CanActivate, CanLoad, Router } from '@angular/router';
+import { Observable, map } from 'rxjs';
 import { AuthService } from '../service/auth.service';
 
 @Injectable({
@@ -17,26 +9,24 @@ import { AuthService } from '../service/auth.service';
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(
-    _route: ActivatedRouteSnapshot,
-    _state: RouterStateSnapshot
-  ): Observable<boolean> {
+  isAllowed() {
     return this.authService.hasSessionActive().pipe(
-      tap((isAuth) => {
-        if (!isAuth) {
-          this.router.navigate(['/auth/login']);
+      map((isAuth) => {
+        if (isAuth) {
+          return true;
+        } else {
+          this.router.navigate(['/auth']);
+          return false;
         }
       })
     );
   }
 
-  canLoad(_route: Route, _segments: UrlSegment[]): Observable<boolean> {
-    return this.authService.hasSessionActive().pipe(
-      tap((isAuth) => {
-        if (!isAuth) {
-          this.router.navigate(['/auth/login']);
-        }
-      })
-    );
+  canActivate(): Observable<boolean> {
+    return this.isAllowed();
+  }
+
+  canLoad(): Observable<boolean> {
+    return this.isAllowed();
   }
 }

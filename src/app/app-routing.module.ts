@@ -7,7 +7,7 @@ import { ErrorPageComponent } from './shared/pages/error-page/error-page.compone
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: 'auth',
     pathMatch: 'full',
   },
   {
@@ -17,7 +17,7 @@ const routes: Routes = [
     canActivate: [UserLoguedGuard],
   },
   {
-    path: '',
+    path: 'posts',
     loadChildren: () => import('./post/post.module').then((m) => m.PostModule),
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],

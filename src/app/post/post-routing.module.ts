@@ -9,20 +9,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'posts',
+        component: PostListComponent,
         pathMatch: 'full',
       },
       {
-        path: 'posts',
-        component: PostListComponent,
-      },
-      {
-        path: 'post/:id',
+        path: ':id',
         component: PostDetailComponent,
-      },
-      {
-        path: '**',
-        redirectTo: '404',
       },
     ],
   },

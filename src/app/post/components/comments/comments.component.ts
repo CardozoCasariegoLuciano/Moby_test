@@ -20,13 +20,9 @@ export class CommentsComponent implements OnInit, OnDestroy {
   @Output() onEmit: EventEmitter<Date> = new EventEmitter();
   comments: Icoment[] = [];
   displayBasic: boolean = false;
+  notifierSubscription!: Subscription;
 
   constructor(private postService: PostService) {}
-
-  notifierSubscription: Subscription =
-    this.postService.subjectNotifier.subscribe(() => {
-      this.initComents();
-    });
 
   ngOnDestroy(): void {
     this.notifierSubscription.unsubscribe();
@@ -34,6 +30,15 @@ export class CommentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initComents();
+    this.listeSubject();
+  }
+
+  private listeSubject() {
+    this.notifierSubscription = this.postService.subjectNotifier.subscribe(
+      () => {
+        this.initComents();
+      }
+    );
   }
 
   private initComents() {

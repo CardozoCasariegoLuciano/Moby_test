@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { NewPost } from '../../interfaces/posts.interface';
+import { NewComment } from '../../interfaces/posts.interface';
 import { Icoment } from '../../interfaces/user.interface';
 import { PostService } from '../../services/post.service';
 
@@ -66,27 +66,27 @@ export class CommentFormComponent implements OnInit {
   }
 
   private addComment() {
-    const data: NewPost = {
+    const data: NewComment = {
       name: this.commentsForm.controls['name'].value,
       body: this.commentsForm.controls['body'].value,
       email: this.authService.getUserLogued!.email!,
       postId: this.postID!,
     };
 
-    this.postService.addComment(data).subscribe();
+    this.postService.addComment(data);
     this.onEmit.emit(new Date());
   }
 
   private editComment() {
     const commentID = this.comment!.id;
-    const data: NewPost = {
+    const data: NewComment = {
       name: this.commentsForm.controls['name'].value,
       body: this.commentsForm.controls['body'].value,
       email: this.authService.getUserLogued!.email!,
       postId: this.comment!.postId,
     };
 
-    this.postService.editComment(data, commentID).subscribe();
+    this.postService.editComment(data, commentID);
     this.onEmit.emit(new Date());
   }
 
