@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { convertMessage } from 'src/app/helpers/authErrorMessajes';
 import { emailPattern } from 'src/app/shared/customValidators/regex';
-import { IuserLogin } from '../../interfaces/login.interface';
+import { FireAuth } from '../../interfaces/register.interface';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
@@ -12,13 +13,16 @@ import { AuthService } from '../../service/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  loginRequest!: Subscription
   loginError = {
     showMsg: false,
     message: '',
   };
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -48,17 +52,20 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const data: IuserLogin = {
+    const data: FireAuth = {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
     };
 
-    this.loginRequest && this.loginRequest.unsubscribe();
-    this.loginRequest = this.authService.login(data).subscribe((resp) => {
-      if (!resp) {
+    this.authService
+      .fireLogIn(data)
+      .then((resp) => {
+        this.authService.setStorage(resp.user.uid)
+        this.router.navigate(['/posts']);
+      })
+      .catch((err) => {
         this.loginError.showMsg = true;
-        this.loginError.message = 'Wrong email or password';
-      }
-    });
+        this.loginError.message = convertMessage(err['code']);
+      });
   }
 }

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "moby-test-9a309": {
+      "hosting": {
+        "Moby-test": [
+          "moby-test-9a309"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "moby-test-9a309"
+  }
+}

@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Auth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Firestore, getDocs, query, where } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { map, Observable, of, tap } from 'rxjs';
+import { createUserWithEmailAndPassword } from '@firebase/auth';
+import { addDoc, collection } from '@firebase/firestore';
+import { tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Iauth } from '../interfaces/auth.interface';
-import { IuserLogin } from '../interfaces/login.interface';
-import { IuserRegister } from '../interfaces/register.interface';
+import { Iauth, User } from '../interfaces/auth.interface';
+import { FireAuth, IuserRegister } from '../interfaces/register.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,83 +17,20 @@ export class AuthService {
   baseURL = environment.baseURL;
   private userLogued: Iauth | undefined;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private auth: Auth,
+    private firestore: Firestore
+  ) {
     const user = localStorage.getItem('userLogued');
     if (user) {
       this.userLogued = JSON.parse(user);
     }
   }
 
-  hasSessionActive(): Observable<boolean> {
-    const user = localStorage.getItem('userLogued');
-    if (!user) return of(false);
-
-    const userID = JSON.parse(user).id;
-
-    return this.http.get<Iauth>(`${this.baseURL}/users/${userID}`).pipe(
-      map((auth) => {
-        this.userLogued = auth;
-        return true;
-      })
-    );
-  }
-
   get getUserLogued() {
     return { ...this.userLogued };
-  }
-
-  login(data: IuserLogin) {
-    return this.http
-      .get<Iauth[]>(`${this.baseURL}/users?email=${data.email}`)
-      .pipe(
-        map((user) => {
-          if (this.isValidLogin(user, data.password)) {
-            this.userLogued = user[0];
-            localStorage.setItem('userLogued', JSON.stringify(user[0]));
-            this.router.navigate(['/posts']);
-            return true;
-          }
-          return false;
-        })
-      );
-  }
-
-  isValidLogin(user: Iauth[], pass: string): boolean {
-    if (user.length === 0) return false;
-    if (user[0].password != pass) return false;
-
-    return true;
-  }
-
-  register(data: IuserRegister) {
-    return this.http
-      .get<Iauth[]>(`${this.baseURL}/users?email=${data.email}`)
-      .pipe(
-        map((user) => {
-          if (user.length === 0) {
-            this.registerUser(data).subscribe();
-            return true;
-          } else {
-            return false;
-          }
-        })
-      );
-  }
-
-  registerUser(data: IuserRegister) {
-    return this.http.post<Iauth>(`${this.baseURL}/users`, data).pipe(
-      tap((user) => {
-        this.userLogued = user;
-        localStorage.setItem('userLogued', JSON.stringify(user));
-        this.router.navigate(['/posts']);
-      })
-    );
-  }
-
-  logOut() {
-    localStorage.removeItem('userLogued');
-    this.userLogued = undefined;
-    this.router.navigate(['/auth/login']);
   }
 
   editUser(data: Iauth): void {
@@ -102,5 +42,51 @@ export class AuthService {
         })
       )
       .subscribe();
+  }
+
+  fireRegister(data: FireAuth) {
+    return createUserWithEmailAndPassword(this.auth, data.email, data.password);
+  }
+
+  fireLogIn(data: FireAuth) {
+    return signInWithEmailAndPassword(this.auth, data.email, data.password);
+  }
+
+  fireLogOut() {
+    signOut(this.auth)
+      .then(() => {
+        localStorage.removeItem('userLogued');
+        this.userLogued = undefined;
+        this.router.navigate(['/auth']);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  prepare(data: IuserRegister) {
+    const user: User = {
+      fullName: data.name,
+      userName: data.username,
+      email: data.email,
+      role: 'USER',
+      photo: data.photo,
+      birthDate: data.birthDate,
+      ubication: { lat: '0', lng: '0' },
+      id: data.id,
+    };
+    const userRef = collection(this.firestore, 'users');
+    localStorage.setItem('userLogued', JSON.stringify(user));
+    return addDoc(userRef, user);
+  }
+
+  async setStorage(userID: string) {
+    const userRef = collection(this.firestore, 'users');
+
+    const q = query(userRef, where('id', '==', userID));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      localStorage.setItem('userLogued', JSON.stringify(doc.data()));
+    });
   }
 }

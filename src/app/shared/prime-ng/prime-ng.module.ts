@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import {CalendarModule} from 'primeng/calendar';
 
 @NgModule({
   exports: [
@@ -12,6 +13,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     MenubarModule,
     DialogModule,
     InputTextareaModule,
+    CalendarModule,
   ],
 })
 export class PrimeNGModule {}

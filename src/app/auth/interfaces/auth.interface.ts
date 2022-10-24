@@ -28,3 +28,14 @@ export interface Company {
   catchPhrase?: string;
   bs?: string;
 }
+
+export interface User {
+  id?: string;
+  fullName: string;
+  userName: string;
+  email: string;
+  role: string;
+  photo: string;
+  birthDate: Date;
+  ubication: Geo;
+}

@@ -1,5 +1,8 @@
 <div class="conteiner">
   <form class="auth-form" [formGroup]="registerForm" (submit)="register()">
+    <div class="image">
+      <img [src]="image" alt="avatar" />
+    </div>
     <h2>Register</h2>
 
     <div class="auth-form__input">
@@ -71,6 +74,28 @@
       <p *ngIf="isValidField('password')" class="error-msg">
         Repeated password is required
       </p>
+    </div>
+
+    <div class="auth-form__input">
+      <span class="p-input-icon-left">
+        <i class="pi pi-image"></i>
+        <input
+          type="text"
+          pInputText
+          placeholder="profile URL image (optional)"
+          formControlName="photo"
+        />
+      </span>
+      <p *ngIf="isValidField('photo')" class="error-msg">
+        Copy a valid image URL
+      </p>
+    </div>
+
+    <div>
+      <p-calendar
+        placeholder="Birth date"
+        formControlName="birthDate"
+      ></p-calendar>
     </div>
 
     <div class="auth-form__actions">
