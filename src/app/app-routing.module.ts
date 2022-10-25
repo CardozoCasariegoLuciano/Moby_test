@@ -24,6 +24,11 @@ const routes: Routes = [
     ...canActivate(() => redirectUnauthorizedTo(['/auth'])),
   },
   {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
+    ...canActivate(() => redirectUnauthorizedTo(['/auth'])),
+  },
+  {
     path: '404',
     component: ErrorPageComponent,
   },

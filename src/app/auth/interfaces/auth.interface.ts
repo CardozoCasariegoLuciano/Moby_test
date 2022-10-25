@@ -36,6 +36,6 @@ export interface User {
   email: string;
   role: string;
   photo: string;
-  birthDate: Date;
+  birthDate: string;
   ubication: Geo;
 }

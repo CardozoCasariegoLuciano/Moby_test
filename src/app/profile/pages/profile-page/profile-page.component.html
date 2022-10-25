@@ -1,0 +1,123 @@
+<div class="conteiner mb">
+  <div class="profileData" *ngIf="!isEditing">
+    <div class="image">
+      <img [src]="image" alt="avatar" />
+    </div>
+
+    <h3>Profile <i class="pi pi-pencil edit-icon" (click)="edit()"></i></h3>
+
+    <div class="dataContainer">
+      <p><span>Name: </span>{{ userData.fullName }}</p>
+      <p><span>User name:</span> {{ userData.userName }}</p>
+      <p><span>Birth day:</span> {{ userData.birthDate | date }}</p>
+      <p><span>Email:</span> {{ userData.email }}</p>
+      <p><span>Role:</span> {{ userData.role }}</p>
+      <p>
+        <span>Location:</span> latitude {{ userData.ubication.lat }} / longitude
+        {{ userData.ubication.lng }}
+      </p>
+    </div>
+
+    <h3 class="posts_title">My posts</h3>
+  </div>
+
+  <form class="edit-form" [formGroup]="editUserForm" *ngIf="isEditing">
+    <div class="image">
+      <img [src]="image" alt="avatar" />
+    </div>
+
+    <h3>Edit profile</h3>
+
+    <div class="forms">
+      <div class="edit-form__input">
+        <span class="p-input-icon-left">
+          <i class="pi pi-user"></i>
+          <input
+            type="text"
+            pInputText
+            placeholder="Username"
+            formControlName="username"
+          />
+        </span>
+        <small *ngIf="isValidField('username')" class="p-error block"
+          >Username is required</small
+        >
+      </div>
+
+      <div class="edit-form__input">
+        <span class="p-input-icon-left">
+          <i class="pi pi-image"></i>
+          <input
+            type="text"
+            pInputText
+            placeholder="Image URL "
+            formControlName="photo"
+          />
+        </span>
+      </div>
+
+      <h5>Change geolocation</h5>
+      <div class="edit-form__input">
+        <span class="p-input-icon-left">
+          <i class="pi pi-map-marker"></i>
+          <input
+            type="text"
+            pInputText
+            placeholder="Latitude"
+            formControlName="lat"
+          />
+        </span>
+        <small *ngIf="!areGeoEquals" class="p-error block">
+          Both are required</small
+        >
+      </div>
+
+      <div class="edit-form__input">
+        <span class="p-input-icon-left">
+          <i class="pi pi-map-marker"></i>
+          <input
+            type="text"
+            pInputText
+            placeholder="Longitude"
+            formControlName="lng"
+          />
+        </span>
+        <small *ngIf="!areGeoEquals" class="p-error block">
+          Both are required</small
+        >
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="cancelBTN" (click)="cancelEdit()">Cancel</button>
+      <button class="editBTN" (click)="sendEdit()">Edit</button>
+    </div>
+  </form>
+</div>
+
+<!--<ng-template pTemplate="footer">-->
+<!--<button-->
+<!--pButton-->
+<!--pRipple-->
+<!--icon="pi {{ !showExtraField ? 'pi-plus' : 'pi-minus' }}"-->
+<!--type="button"-->
+<!--label="{{ !showExtraField ? 'More fields' : 'Simple fields' }}"-->
+<!--class="p-button-success p-button-text"-->
+<!--(click)="displayMoreFields()"-->
+<!--></button>-->
+<!--<p-button-->
+<!--icon="pi pi-times"-->
+<!--(click)="closeModal()"-->
+<!--label="Cancel"-->
+<!--styleClass="p-button-text p-button-danger"-->
+<!-->-->
+<!--</p-button>-->
+<!--<p-button-->
+<!--icon="pi pi-check"-->
+<!--(click)="editData()"-->
+<!--label="Edit"-->
+<!--[disabled]="editUserForm.invalid"-->
+<!--styleClass="p-button-text"-->
+<!--></p-button>-->
+
+<!--</ng-template>-->

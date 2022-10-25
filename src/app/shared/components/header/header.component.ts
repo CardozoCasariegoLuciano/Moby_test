@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { Iauth } from '../../../auth/interfaces/auth.interface';
+import { User } from '../../../auth/interfaces/auth.interface';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,12 +13,27 @@ import { Iauth } from '../../../auth/interfaces/auth.interface';
 export class HeaderComponent implements OnInit {
   displayBasic: boolean = false;
   items: MenuItem[] = [];
-  data!: Iauth;
+  data!: User;
+  activeSection = 'Home';
+  userLogued!: User;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private route: Router,
+    private location: Location,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.initMenuItems();
+    this.setSectionText();
+    this.setUserLogued();
+  }
+
+  private setUserLogued() {
+    const user = localStorage.getItem('userLogued');
+    if (user) {
+      this.userLogued = JSON.parse(user) as User;
+    }
   }
 
   private initMenuItems() {
@@ -30,7 +47,7 @@ export class HeaderComponent implements OnInit {
             label: 'Edit',
             icon: 'pi pi-fw pi-user-edit',
             command: () => {
-              this.showDialog();
+              this.goProfile();
             },
           },
           {
@@ -45,17 +62,41 @@ export class HeaderComponent implements OnInit {
     ];
   }
 
-  showDialog() {
-    this.data = this.userLogued;
-    this.displayBasic = true;
+  private setSectionText() {
+    this.location.onUrlChange((path) => {
+      switch (path) {
+        case '/posts':
+          this.activeSection = 'Home';
+          break;
+        case '/profile':
+          this.activeSection = 'Profile';
+          break;
+        case '/404':
+          this.activeSection = 'Error :C';
+          break;
+        default:
+          const postID = this.getPostIDbyURL(path);
+          this.activeSection = `Post id: ${postID}`;
+          break;
+      }
+    });
+  }
+
+  getPostIDbyURL(path: string) {
+    const id = path.split('/');
+    return id.pop();
+  }
+
+  goProfile() {
+    this.route.navigate(['/profile']);
+  }
+
+  goHome() {
+    this.route.navigate(['/posts']);
   }
 
   closeModal(_: boolean) {
     this.displayBasic = false;
-  }
-
-  get userLogued() {
-    return this.authService.getUserLogued;
   }
 
   logOut() {

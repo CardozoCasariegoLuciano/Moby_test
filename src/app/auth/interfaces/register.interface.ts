@@ -5,7 +5,7 @@ export interface IuserRegister {
   email: string;
   password: string;
   photo: string;
-  birthDate: Date;
+  birthDate: string;
 }
 
 export interface FireAuth {

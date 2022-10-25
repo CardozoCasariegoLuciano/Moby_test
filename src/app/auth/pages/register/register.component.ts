@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { debounceTime } from 'rxjs';
 import { convertMessage } from 'src/app/helpers/authErrorMessajes';
 import {
   emailPattern,
-  URLImagePattern,
 } from 'src/app/shared/customValidators/regex';
 import { IuserRegister } from '../../interfaces/register.interface';
 import { AuthService } from '../../service/auth.service';
@@ -24,7 +22,6 @@ export class RegisterComponent implements OnInit {
   };
 
   constructor(
-    private router: Router,
     private fb: FormBuilder,
     private authService: AuthService
   ) {}
@@ -40,7 +37,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.pattern(emailPattern)]],
       password: ['', [Validators.required]],
       repeatPassword: ['', [Validators.required]],
-      photo: ['', [Validators.pattern(URLImagePattern)]],
+      photo: [''],
       birthDate: [''],
     });
 
@@ -97,7 +94,6 @@ export class RegisterComponent implements OnInit {
       .fireRegister({ email: data.email, password: data.password })
       .then((resp) => {
         this.authService.prepare({ ...data, id: resp.user.uid });
-        this.router.navigate(['/posts']);
       })
       .catch((err) => {
         this.registerError.showMsg = true;

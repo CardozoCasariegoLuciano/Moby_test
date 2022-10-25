@@ -1,14 +1,11 @@
 <p-menubar [model]="items">
   <ng-template pTemplate="start">
-    <h2 class="logo">PostsApp</h2>
+    <div class="left">
+      <h2 class="logo"(click)="goHome()">PostsApp</h2>
+      <p class="position">{{ activeSection }}</p>
+    </div>
   </ng-template>
   <ng-template pTemplate="end">
-    <h2 class="userName">{{ userLogued.name }}</h2>
+    <h2 class="userName">{{ userLogued.userName }}</h2>
   </ng-template>
 </p-menubar>
-
-<div *ngIf="displayBasic">
-  <app-edit-user-form (oncloseModal)="closeModal($event)" [userData]="data">
-  </app-edit-user-form>
-</div>
-

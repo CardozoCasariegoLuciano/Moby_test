@@ -1,13 +1,19 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
-import { Firestore, getDocs, query, where } from '@angular/fire/firestore';
+import {
+  doc,
+  Firestore,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { addDoc, collection } from '@firebase/firestore';
-import { tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Iauth, User } from '../interfaces/auth.interface';
+import { User } from '../interfaces/auth.interface';
 import { FireAuth, IuserRegister } from '../interfaces/register.interface';
 
 @Injectable({
@@ -15,33 +21,37 @@ import { FireAuth, IuserRegister } from '../interfaces/register.interface';
 })
 export class AuthService {
   baseURL = environment.baseURL;
-  private userLogued: Iauth | undefined;
+  private userLogued: User | undefined;
 
   constructor(
-    private http: HttpClient,
     private router: Router,
     private auth: Auth,
     private firestore: Firestore
   ) {
     const user = localStorage.getItem('userLogued');
     if (user) {
-      this.userLogued = JSON.parse(user);
+      this.userLogued = JSON.parse(user) as User;
     }
   }
 
   get getUserLogued() {
-    return { ...this.userLogued };
+    return { ...this.userLogued } as User;
   }
 
-  editUser(data: Iauth): void {
-    this.http
-      .patch<Iauth>(`${this.baseURL}/users/${data.id}`, data)
-      .pipe(
-        tap((user) => {
-          this.userLogued = user;
-        })
-      )
-      .subscribe();
+  //editUser(data: Iauth): void {
+  //this.http
+  //.patch<Iauth>(`${this.baseURL}/users/${data.id}`, data)
+  //.pipe(
+  //tap((user) => {
+  //this.userLogued = user;
+  //})
+  //)
+  //.subscribe();
+  //}
+
+  async editUser(data: User) {
+    const userRef = doc(this.firestore, 'user', data.id!);
+    await setDoc(userRef, data);
   }
 
   fireRegister(data: FireAuth) {
@@ -71,12 +81,13 @@ export class AuthService {
       email: data.email,
       role: 'USER',
       photo: data.photo,
-      birthDate: data.birthDate,
-      ubication: { lat: '0', lng: '0' },
+      birthDate: data.birthDate.toString(),
+      ubication: { lat: '', lng: '' },
       id: data.id,
     };
     const userRef = collection(this.firestore, 'users');
     localStorage.setItem('userLogued', JSON.stringify(user));
+    this.router.navigate(['/posts']);
     return addDoc(userRef, user);
   }
 
@@ -88,5 +99,6 @@ export class AuthService {
     querySnapshot.forEach((doc) => {
       localStorage.setItem('userLogued', JSON.stringify(doc.data()));
     });
+    this.router.navigate(['/posts']);
   }
 }
