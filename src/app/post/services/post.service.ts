@@ -33,8 +33,10 @@ export class PostService {
 
   getPostsByUserID(userID: string) {
     return this.db
-      .collection('posts', (ref) => ref.where('author.id', '==', userID))
-      .valueChanges();
+      .collection('posts', (ref) => {
+        return ref.where('author.id', '==', userID);
+      })
+      .valueChanges({idField: 'id'});
   }
 
   getPostByID(id: string): Observable<Ipost> {

@@ -18,16 +18,14 @@ export interface Address {
   geo?: Geo;
 }
 
-export interface Geo {
-  lat?: string;
-  lng?: string;
-}
-
 export interface Company {
   name?: string;
   catchPhrase?: string;
   bs?: string;
 }
+
+
+
 
 export interface User {
   id?: string;
@@ -38,4 +36,15 @@ export interface User {
   photo: string;
   birthDate: string;
   ubication: Geo;
+}
+
+export interface EditUser {
+  ubication: Geo;
+  photo: string;
+  userName: string;
+}
+
+export interface Geo {
+  lat: string;
+  lng: string;
 }

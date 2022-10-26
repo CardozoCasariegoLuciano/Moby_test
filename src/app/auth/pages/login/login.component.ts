@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
     this.authService
       .fireLogIn(data)
       .then((resp) => {
-        this.authService.setStorage(resp.user.uid);
+        this.authService.setStorage(resp.user.email!);
       })
       .catch((err) => {
         this.loginError.showMsg = true;

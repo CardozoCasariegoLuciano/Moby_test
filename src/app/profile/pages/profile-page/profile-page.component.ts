@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/auth/interfaces/auth.interface';
+import { EditUser, User } from 'src/app/auth/interfaces/auth.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Post } from 'src/app/post/interfaces/posts.interface';
 import { PostService } from 'src/app/post/services/post.service';
@@ -34,6 +34,7 @@ export class ProfilePageComponent implements OnInit {
 
   private getUserPosts() {
     this.postService.getPostsByUserID(this.userData.id!).subscribe((posts) => {
+      console.log(posts);
       this.userPosts = posts as Post[];
       this.arePostReady = true;
     });
@@ -54,9 +55,9 @@ export class ProfilePageComponent implements OnInit {
   private initForm() {
     this.editUserForm = this.fb.group({
       username: [this.userData!.userName, [Validators.required]],
-      photo: [this.userData!.photo, [Validators.required]],
-      lat: [this.userData!.ubication.lat, [Validators.required]],
-      lng: [this.userData!.ubication.lng, [Validators.required]],
+      photo: [this.userData!.photo],
+      lat: [this.userData!.ubication?.lat],
+      lng: [this.userData!.ubication?.lng],
     });
   }
 
@@ -68,48 +69,22 @@ export class ProfilePageComponent implements OnInit {
     this.isEditing = false;
   }
 
-  sendEdit() {
-    console.log(this.editUserForm.value);
-    this.authService.editUser(this.editUserForm.value);
+  editData() {
+    if (this.editUserForm.invalid) return;
+    if (!this.isGeoOk()) return;
+
+    const data: EditUser = {
+      userName: this.editUserForm.get('username')!.value,
+      photo: this.editUserForm.get('photo')!.value,
+      ubication: {
+        lat: this.editUserForm.get('lat')!.value || '',
+        lng: this.editUserForm.get('lng')!.value || '',
+      },
+    };
+
+    const userID = this.authService.getUserLogued.id!;
+    this.authService.editUser(data, userID);
   }
-
-  //editData() {
-  //if (this.editUserForm.invalid) return;
-  //if (!this.arePasswordsOk()) return;
-  //if (!this.isGeoOk()) return;
-
-  //let data: Iauth = {
-  //id: this.userData!.id!,
-  //name: this.editUserForm.get('name')?.value,
-  //username: this.editUserForm.get('username')?.value,
-  //phone: this.editUserForm.get('phone')?.value,
-  //website: this.editUserForm.get('webSite')?.value,
-  //address: {
-  //street: this.editUserForm.get('street')?.value,
-  //suite: this.editUserForm.get('suite')?.value,
-  //city: this.editUserForm.get('city')?.value,
-  //zipcode: this.editUserForm.get('zipcode')?.value,
-  //geo: {
-  //lat: this.editUserForm.get('lat')?.value,
-  //lng: this.editUserForm.get('lng')?.value,
-  //},
-  //},
-  //company: {
-  //name: this.editUserForm.get('companyName')?.value,
-  //catchPhrase: this.editUserForm.get('catchPhrase')?.value,
-  //bs: this.editUserForm.get('bs')?.value,
-  //},
-  //};
-
-  //const password = this.editUserForm.get('newPasswords')?.value;
-
-  //if (password) {
-  //data.password = password;
-  //}
-
-  //this.authService.editUser(data);
-  //this.closeModal();
-  //}
 
   isValidField(name: string) {
     return (
@@ -118,62 +93,24 @@ export class ProfilePageComponent implements OnInit {
     );
   }
 
-  //arePasswordsOk() {
-  //const actualPass = this.userData!.password;
-  //const pass = this.editUserForm.controls['password'];
-  //const newPass = this.editUserForm.controls['newPasswords'];
-  //const repeateNewPass = this.editUserForm.controls['repeatNewPassword'];
+  isGeoOk() {
+    const lat = this.editUserForm.get('lat')?.value;
+    const lng = this.editUserForm.get('lng')?.value;
 
-  //if (
-  //pass.value === '' &&
-  //newPass.value === '' &&
-  //repeateNewPass.value === ''
-  //) {
-  //return true;
-  //}
+    const onlyLat = lat != '' && lng == '';
+    const onlyLng = lng != '' && lat == '';
 
-  //if (actualPass != pass.value) {
-  //pass.setErrors({ wrongPass: true });
-  //return false;
-  //}
+    if (onlyLng) {
+      this.areGeoEquals = false;
+      return false;
+    }
 
-  //if (newPass.value != repeateNewPass.value) {
-  //repeateNewPass.setErrors({
-  //dontMatch: true,
-  //});
-  //return false;
-  //}
+    if (onlyLat) {
+      this.areGeoEquals = false;
+      return false;
+    }
 
-  //return true;
-  //}
-
-  //isGeoOk() {
-  //const lat = this.editUserForm.get('lat')?.value;
-  //const lng = this.editUserForm.get('lng')?.value;
-
-  //const onlyLat = lat != '' && lng == '';
-  //const onlyLng = lng != '' && lat == '';
-
-  //if (onlyLng) {
-  //this.areGeoEquals = false;
-  //return false;
-  //}
-
-  //if (onlyLat) {
-  //this.areGeoEquals = false;
-  //return false;
-  //}
-
-  //this.areGeoEquals = true;
-  //return true;
-  //}
-
-  //displayMoreFields() {
-  //this.showExtraField = !this.showExtraField;
-  //}
-
-  //closeModal() {
-  //this.editUserForm.reset();
-  //this.oncloseModal.emit(false);
-  //}
+    this.areGeoEquals = true;
+    return true;
+  }
 }
