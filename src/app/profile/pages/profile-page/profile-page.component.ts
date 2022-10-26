@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/auth/interfaces/auth.interface';
-import {AuthService} from 'src/app/auth/service/auth.service';
+import { AuthService } from 'src/app/auth/service/auth.service';
+import { Post } from 'src/app/post/interfaces/posts.interface';
+import { PostService } from 'src/app/post/services/post.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -12,15 +14,29 @@ export class ProfilePageComponent implements OnInit {
   editUserForm!: FormGroup;
   areGeoEquals: boolean = true;
   userData!: User;
-  isEditing: boolean = true;
+  isEditing: boolean = false;
   image!: string;
+  userPosts: Post[] = [];
+  arePostReady: boolean = false;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  constructor(
+    private postService: PostService,
+    private authService: AuthService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.getStorage();
     this.initForm();
     this.setImage();
+    this.getUserPosts();
+  }
+
+  private getUserPosts() {
+    this.postService.getPostsByUserID(this.userData.id!).subscribe((posts) => {
+      this.userPosts = posts as Post[];
+      this.arePostReady = true;
+    });
   }
 
   private setImage() {
@@ -52,9 +68,9 @@ export class ProfilePageComponent implements OnInit {
     this.isEditing = false;
   }
 
-  sendEdit(){
-    console.log(this.editUserForm.value)
-    this.authService.editUser(this.editUserForm.value)
+  sendEdit() {
+    console.log(this.editUserForm.value);
+    this.authService.editUser(this.editUserForm.value);
   }
 
   //editData() {

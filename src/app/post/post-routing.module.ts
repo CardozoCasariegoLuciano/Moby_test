@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {HomeComponent} from './pages/home/home.component';
 import { PostDetailComponent } from './pages/post-detail/post-detail.component';
-import { PostListComponent } from './pages/post-list/post-list.component';
 
 const routes: Routes = [
   {
@@ -9,7 +9,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: PostListComponent,
+        component: HomeComponent,
         pathMatch: 'full',
       },
       {

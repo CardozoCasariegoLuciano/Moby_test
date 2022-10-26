@@ -1,0 +1,9 @@
+<div class="conteiner mb">
+  <div *ngIf="isready" class="post_list">
+    <app-post-list [data]="data" title="Posts"></app-post-list>
+  </div>
+
+  <div *ngIf="!isready">
+    <app-spiner></app-spiner>
+  </div>
+</div>

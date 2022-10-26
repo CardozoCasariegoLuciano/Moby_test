@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { NewComment } from '../../interfaces/posts.interface';
+import { NewComment } from '../../interfaces/comment.interface';
 import { Icoment } from '../../interfaces/user.interface';
 import { PostService } from '../../services/post.service';
 

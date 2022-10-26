@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import {AuthService} from './auth/service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { NavigationEnd, Router } from '@angular/router';
 export class AppComponent implements OnInit {
   route: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
@@ -20,7 +21,9 @@ export class AppComponent implements OnInit {
   }
 
   get showHeader() {
-    const isLogged = localStorage.getItem('userLogued');
-    return isLogged;
+    return this.authService.isLogged
+    //const isLogged = localStorage.getItem('userLogued');
+    //return isLogged;
+    //return true
   }
 }

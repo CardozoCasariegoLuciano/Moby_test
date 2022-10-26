@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   doc,
   Firestore,
   getDocs,
   query,
   setDoc,
-  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
@@ -22,12 +22,29 @@ import { FireAuth, IuserRegister } from '../interfaces/register.interface';
 export class AuthService {
   baseURL = environment.baseURL;
   private userLogued: User | undefined;
+  isLogged: boolean = false;
 
   constructor(
     private router: Router,
     private auth: Auth,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private db: AngularFirestore
   ) {
+    this.setstorage();
+    this.setIsLogued();
+  }
+
+  private setIsLogued() {
+    this.auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.isLogged = true;
+      } else {
+        this.isLogged = false;
+      }
+    });
+  }
+
+  private setstorage() {
     const user = localStorage.getItem('userLogued');
     if (user) {
       this.userLogued = JSON.parse(user) as User;
@@ -37,17 +54,6 @@ export class AuthService {
   get getUserLogued() {
     return { ...this.userLogued } as User;
   }
-
-  //editUser(data: Iauth): void {
-  //this.http
-  //.patch<Iauth>(`${this.baseURL}/users/${data.id}`, data)
-  //.pipe(
-  //tap((user) => {
-  //this.userLogued = user;
-  //})
-  //)
-  //.subscribe();
-  //}
 
   async editUser(data: User) {
     const userRef = doc(this.firestore, 'user', data.id!);
@@ -91,14 +97,13 @@ export class AuthService {
     return addDoc(userRef, user);
   }
 
-  async setStorage(userID: string) {
-    const userRef = collection(this.firestore, 'users');
-
-    const q = query(userRef, where('id', '==', userID));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      localStorage.setItem('userLogued', JSON.stringify(doc.data()));
-    });
-    this.router.navigate(['/posts']);
+  setStorage(userID: string) {
+    return this.db
+      .collection('users', (ref) => ref.where('id', '==', userID))
+      .valueChanges()
+      .subscribe((val) => {
+        localStorage.setItem('userLogued', JSON.stringify(val[0]));
+        this.router.navigate(['/posts']);
+      });
   }
 }

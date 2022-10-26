@@ -18,7 +18,13 @@
       </p>
     </div>
 
-    <h3 class="posts_title">My posts</h3>
+    <div *ngIf="!arePostReady">
+      <app-spiner></app-spiner>
+    </div>
+
+    <div *ngIf="arePostReady">
+      <app-post-list [data]="userPosts" title="My posts"></app-post-list>
+    </div>
   </div>
 
   <form class="edit-form" [formGroup]="editUserForm" *ngIf="isEditing">

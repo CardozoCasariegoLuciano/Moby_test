@@ -1,8 +1,23 @@
 @use "/src/variables" as v;
 @use "/src/mixis" as m;
 
+.post_list {
+  width: 100%;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  button {
+    width: 30px;
+    height: 30px;
+  }
+}
+
 table {
-  width: 70%;
+  width: 100%;
   background-color: rgba($color: #fff, $alpha: 0.4);
   border-radius: 0px 0px 10px 10px;
   border-collapse: collapse;
@@ -35,8 +50,6 @@ tbody {
   }
 }
 
-@media (max-width: 950px) {
-  table {
-    width: 100%;
-  }
+.createPost {
+  cursor: pointer;
 }

@@ -1,0 +1,39 @@
+<div class="post_list">
+  <div class="post-header">
+    <h1>{{title}}</h1>
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-plus"
+      class="p-button-rounded"
+      (click)="showNewPostform()"
+      ></button>
+  </div>
+
+  <table *ngIf="data.length > 0">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let cell of data">
+        <td>{{ cell.title }}</td>
+        <td><a [routerLink]="['/posts', cell.id]">Ver mas...</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="data.length <= 0">
+    <h3>There are no posts load</h3>
+    <p class="createPost" (click)="showNewPostform()">Create a new post</p>
+  </div>
+</div>
+
+<app-new-post-form
+  [showForm]="showAddPostModal"
+  (oncloseModal)="hideNewPostform()"
+></app-new-post-form>

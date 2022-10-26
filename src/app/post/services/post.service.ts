@@ -1,9 +1,17 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  Firestore,
+} from '@angular/fire/firestore';
 import { catchError, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { NewComment } from '../interfaces/posts.interface';
+import { NewComment } from '../interfaces/comment.interface';
+import { Post } from '../interfaces/posts.interface';
 import { Icoment, Ipost } from '../interfaces/user.interface';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +20,21 @@ export class PostService {
   private postsURL: string = environment.baseURL;
   subjectNotifier: Subject<null> = new Subject<null>();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private firestore: Firestore,
+    private db: AngularFirestore
+  ) {}
 
-  getPosts(): Observable<Ipost[]> {
-    return this.http
-      .get<Ipost[]>(`${this.postsURL}/posts`)
-      .pipe(catchError(this.errorHandler));
+  getPosts(): Observable<Post[]> {
+    const postRef = collection(this.firestore, 'posts');
+    return collectionData(postRef, { idField: 'id' }) as Observable<Post[]>;
+  }
+
+  getPostsByUserID(userID: string) {
+    return this.db
+      .collection('posts', (ref) => ref.where('author.id', '==', userID))
+      .valueChanges();
   }
 
   getPostByID(id: string): Observable<Ipost> {
@@ -51,4 +68,11 @@ export class PostService {
   notifyAboutChange() {
     this.subjectNotifier.next(null);
   }
+
+  addPost(data: Post) {
+    const postsRef = collection(this.firestore, 'posts');
+    return addDoc(postsRef, data);
+  }
+
+  editPost(data: Post, postID: string) {}
 }
