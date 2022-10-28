@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { convertMessage } from 'src/app/helpers/authErrorMessajes';
 import { emailPattern } from 'src/app/shared/customValidators/regex';
 import { FireAuth } from '../../interfaces/register.interface';
@@ -18,10 +17,7 @@ export class LoginComponent implements OnInit {
     message: '',
   };
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService
-  ) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.initForm();

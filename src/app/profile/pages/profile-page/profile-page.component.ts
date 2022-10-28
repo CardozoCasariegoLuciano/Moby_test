@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { EditUser, User } from 'src/app/auth/interfaces/auth.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Post } from 'src/app/post/interfaces/posts.interface';
@@ -10,7 +11,7 @@ import { PostService } from 'src/app/post/services/post.service';
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss'],
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
   editUserForm!: FormGroup;
   areGeoEquals: boolean = true;
   userData!: User;
@@ -18,12 +19,19 @@ export class ProfilePageComponent implements OnInit {
   image!: string;
   userPosts: Post[] = [];
   arePostReady: boolean = false;
+  getUserSubscriber!: Subscription;
+  getUserPostsSubscriber!: Subscription;
 
   constructor(
     private postService: PostService,
     private authService: AuthService,
     private fb: FormBuilder
   ) {}
+
+  ngOnDestroy(): void {
+    this.getUserSubscriber.unsubscribe();
+    this.getUserPostsSubscriber.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.getUserLogued();
@@ -33,10 +41,12 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private getUserPosts() {
-    this.postService.getPostsByUserID(this.userData.id!).subscribe((posts) => {
-      this.userPosts = posts as Post[];
-      this.arePostReady = true;
-    });
+    this.getUserPostsSubscriber = this.postService
+      .getPostsByUserID(this.userData.id!)
+      .subscribe((posts) => {
+        this.userPosts = posts as Post[];
+        this.arePostReady = true;
+      });
   }
 
   private setImage() {
@@ -45,9 +55,11 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private getUserLogued() {
-    this.authService.getUserLogued.subscribe((value) => {
-      this.userData = value!;
-    });
+    this.getUserSubscriber = this.authService.getUserLogued.subscribe(
+      (value) => {
+        this.userData = value!;
+      }
+    );
   }
 
   private initForm() {
@@ -80,8 +92,8 @@ export class ProfilePageComponent implements OnInit {
       },
     };
 
-    const userID = this.userData.id!
-    const userEmail = this.userData.email
+    const userID = this.userData.id!;
+    const userEmail = this.userData.email;
     this.authService.editUser(data, userID, userEmail);
     this.isEditing = false;
   }

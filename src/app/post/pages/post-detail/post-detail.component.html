@@ -64,6 +64,7 @@
               type="button"
               icon="pi pi-comments"
               class="p-button-rounded p-button-secondary"
+              (click)="disabledComments()"
             ></button>
           </div>
         </div>
@@ -75,6 +76,7 @@
         <div class="comment-title">
           <h3>Comments</h3>
           <button
+            *ngIf="!post.commentsDisabled"
             pButton
             pRipple
             type="button"

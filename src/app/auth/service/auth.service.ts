@@ -8,7 +8,8 @@ import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { addDoc, collection } from '@firebase/firestore';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { EditUser, User } from '../interfaces/auth.interface';
 import { FireAuth, IuserRegister } from '../interfaces/register.interface';
 
@@ -58,11 +59,11 @@ export class AuthService {
   }
 
   editUser(data: EditUser, userID: string, userEmail: string) {
-    let temp!: AngularFirestoreDocument<User>;
-    temp = this.db.doc(`users/${userID}`);
-    temp.update(data);
+    let userRef!: AngularFirestoreDocument<User>;
+    userRef = this.db.doc(`users/${userID}`);
+    userRef.update(data);
 
-    this.setStorage(userEmail, false);
+    this.setStorage(userEmail);
   }
 
   fireRegister(data: FireAuth) {
@@ -105,14 +106,15 @@ export class AuthService {
     return data.email;
   }
 
-  setStorage(email: string, redirect: boolean = true) {
+  setStorage(email: string) {
     return this.db
       .collection('users', (ref) => ref.where('email', '==', email))
       .valueChanges({ idField: 'id' })
+      .pipe(take(1))
       .subscribe((val) => {
         localStorage.setItem('userLogued', JSON.stringify(val[0]));
-        this.getStorage();
-        redirect && this.router.navigate(['/posts']);
+        this.updateUserLoged(val[0] as User);
+        this.router.navigate(['/posts']);
       });
   }
 }

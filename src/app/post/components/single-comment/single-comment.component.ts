@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {User} from 'src/app/auth/interfaces/auth.interface';
+import { User } from 'src/app/auth/interfaces/auth.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Comment } from '../../interfaces/comment.interface';
 import { PostService } from '../../services/post.service';
@@ -36,6 +36,7 @@ export class SingleCommentComponent implements OnInit {
   }
 
   canDo(): boolean {
+    if (!this.user) return false;
     const userID = this.user.id;
     const authorID = this.comment.author.id;
     return userID === authorID;

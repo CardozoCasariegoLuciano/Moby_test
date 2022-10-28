@@ -116,6 +116,13 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.postService.editPost(this.post.id!, data);
   }
 
+  disabledComments(){
+    const data: EditPostData = {
+      commentsDisabled: !this.post.commentsDisabled,
+    };
+    this.postService.editPost(this.post.id!, data);
+  }
+
   deletePost() {
     this.postService.deletePost(this.post.id!);
     this.router.navigate(['/posts']);
