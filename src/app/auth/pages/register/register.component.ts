@@ -65,8 +65,6 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    console.log(this.registerForm.value);
-
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
@@ -92,8 +90,8 @@ export class RegisterComponent implements OnInit {
 
     this.authService
       .fireRegister({ email: data.email, password: data.password })
-      .then((resp) => {
-        this.authService.prepare({ ...data, id: resp.user.uid });
+      .then((_) => {
+        this.authService.prepare(data);
       })
       .catch((err) => {
         this.registerError.showMsg = true;

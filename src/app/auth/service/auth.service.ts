@@ -87,8 +87,9 @@ export class AuthService {
   }
 
   prepare(data: IuserRegister) {
-    const email = this.saveUserData(data);
-    this.setStorage(email);
+    this.saveUserData(data).then((_) => {
+      this.setStorage(data.email);
+    });
   }
 
   saveUserData(data: IuserRegister) {
@@ -102,8 +103,7 @@ export class AuthService {
       ubication: { lat: '', lng: '' },
     };
     const userRef = collection(this.firestore, 'users');
-    addDoc(userRef, user);
-    return data.email;
+    return addDoc(userRef, user);
   }
 
   setStorage(email: string) {
