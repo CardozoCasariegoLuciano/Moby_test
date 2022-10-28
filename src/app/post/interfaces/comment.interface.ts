@@ -12,14 +12,9 @@ export interface Comment {
 }
 
 export interface EditCommentData {
-  title: string;
-  body: string;
+  title?: string;
+  body?: string;
+  isHide?: boolean;
+  likes?: ShortUser[],
 }
 
-export interface EditCommentHide {
-  isHide: boolean;
-}
-
-export interface EditCommentLikes {
-  likes: ShortUser[],
-}

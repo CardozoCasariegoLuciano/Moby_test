@@ -12,6 +12,7 @@ import { CommentFormComponent } from './components/comment-form/comment-form.com
 import { NewPostFormComponent } from './components/new-post-form/new-post-form.component';
 import {PostListComponent} from './components/post-list/post-list.component';
 import { HomeComponent } from './pages/home/home.component';
+import { LikesListComponent } from './components/likes-list/likes-list.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { HomeComponent } from './pages/home/home.component';
     CommentFormComponent,
     NewPostFormComponent,
     HomeComponent,
+    LikesListComponent,
   ],
   exports: [PostListComponent, PostDetailComponent],
   imports: [

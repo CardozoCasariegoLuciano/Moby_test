@@ -1,0 +1,24 @@
+<p-dialog
+  header="Likes"
+  [(visible)]="showForm"
+  [style]="{ width: 'auto' }"
+  [closable]="false"
+>
+  <div class="likes">
+    <div class="userLike" *ngFor="let like of likes">
+      <img [src]="getImage(like)" alt="" />
+      <p>{{ like.userName }}</p>
+    </div>
+  </div>
+
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="closeModal()"
+      label="Close"
+      styleClass="p-button-text p-button-danger"
+    ></p-button>
+  </ng-template>
+
+</p-dialog>

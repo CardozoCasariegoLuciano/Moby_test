@@ -87,11 +87,11 @@ export class CommentFormComponent implements OnInit {
   private editComment() {
     const commentID = this.comment!.id;
     const data: EditCommentData = {
-      title: this.commentsForm.controls['name'].value,
+      title: this.commentsForm.controls['title'].value,
       body: this.commentsForm.controls['body'].value,
     };
 
-    this.postService.editComment(data, commentID!);
+    this.postService.editComment(commentID!,data);
   }
 
   closeModal() {

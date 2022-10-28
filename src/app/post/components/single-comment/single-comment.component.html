@@ -1,14 +1,32 @@
 <div class="singleComment">
-  <!--<p>{{ comment | userName: isUpper }}</p>-->
-  <p class="singleComment__body">{{ comment.body }}</p>
-  <div class="singleComment__actions">
-    <button
-      (click)="changeCase()"
-      [ngClass]="{ btn_Uppercase: isUpper, btn_Lowercase: !isUpper }"
-    >
-      {{ !isUpper ? "To UpperCase" : "To LowerCase" }}
-    </button>
+  <div class="comment-header">
+    <div>
+      <img [src]="image" alt="avatar" />
+      <span>{{ comment.author.userName }}</span>
+    </div>
+    <div *ngIf="isAdmin()">
+      <i *ngIf="!comment.isHide" class="pi pi-eye" (click)="hideComment()"></i>
+      <i
+        *ngIf="comment.isHide"
+        class="pi pi-eye-slash"
+        (click)="hideComment()"
+      ></i>
+    </div>
+  </div>
 
+  <div class="comment-title">
+    <p>{{ comment.title }}</p>
+  </div>
+
+  <p class="singleComment__body">{{ comment.body }}</p>
+
+  <div class="comment-likes">
+    <i *ngIf="!isLiked" class="pi pi-thumbs-up" (click)="toggleLike()"></i>
+    <i *ngIf="isLiked" class="pi pi-thumbs-down" (click)="toggleLike()"></i>
+    <span class="likes" (click)="showLikesModal()">Likes: {{ comment.likes.length }}</span>
+  </div>
+
+  <div class="singleComment__actions">
     <button *ngIf="canDo()" class="edit-btn" (click)="showDialog()">
       Edit
     </button>
@@ -25,3 +43,9 @@
   (onEmit)="sendEmmitd()"
   [comment]="comment"
 ></app-comment-form>
+
+<app-likes-list
+  [likes]="comment.likes"
+  [showForm]="showLikes"
+  (oncloseModal)="closeLikeModal()"
+  ></app-likes-list>
