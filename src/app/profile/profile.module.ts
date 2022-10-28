@@ -8,9 +8,11 @@ import { PrimeNGModule } from '../shared/prime-ng/prime-ng.module';
 import { SharedModule } from '../shared/shared.module';
 import {PostModule} from '../post/post.module';
 import { MapComponent } from './components/map/map.component';
+import { UserInformationComponent } from './components/user-information/user-information.component';
+import { FormUserInformationComponent } from './components/form-user-information/form-user-information.component';
 
 @NgModule({
-  declarations: [ProfilePageComponent, MapComponent],
+  declarations: [ProfilePageComponent, MapComponent, UserInformationComponent, FormUserInformationComponent],
   imports: [
     CommonModule,
     RouterModule,

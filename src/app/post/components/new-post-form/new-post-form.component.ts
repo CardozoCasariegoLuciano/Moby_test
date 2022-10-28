@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/auth/interfaces/auth.interface';
+import { User } from 'src/app/auth/interfaces/user.interface';
 import { EditPostData, Post } from '../../interfaces/posts.interface';
 import { PostService } from '../../services/post.service';
 

@@ -22,8 +22,5 @@ export class AppComponent implements OnInit {
 
   get showHeader() {
     return this.authService.isLogged
-    //const isLogged = localStorage.getItem('userLogued');
-    //return isLogged;
-    //return true
   }
 }

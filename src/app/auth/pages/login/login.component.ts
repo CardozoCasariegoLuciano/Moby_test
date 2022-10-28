@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { convertMessage } from 'src/app/helpers/authErrorMessajes';
 import { emailPattern } from 'src/app/shared/customValidators/regex';
-import { FireAuth } from '../../interfaces/register.interface';
+import { FireAuth } from '../../interfaces/auth.interface';
 import { AuthService } from '../../service/auth.service';
 
 @Component({

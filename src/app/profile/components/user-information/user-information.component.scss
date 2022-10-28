@@ -1,0 +1,33 @@
+.dataContainer {
+  margin-top: 20px;
+  p {
+    margin-bottom: 15px;
+    display: block;
+    border-bottom: 1px solid #7c6ec9;
+  }
+
+  span {
+    font-weight: bold;
+    color: grey;
+  }
+}
+
+.edit-icon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  margin: auto;
+  margin-top: 90px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

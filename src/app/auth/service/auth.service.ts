@@ -10,8 +10,8 @@ import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { addDoc, collection } from '@firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { EditUser, User } from '../interfaces/auth.interface';
-import { FireAuth, IuserRegister } from '../interfaces/register.interface';
+import { FireAuth, IuserRegister } from '../interfaces/auth.interface';
+import { EditUser, User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -113,6 +113,7 @@ export class AuthService {
       .pipe(take(1))
       .subscribe((val) => {
         localStorage.setItem('userLogued', JSON.stringify(val[0]));
+        this.getStorage();
         this.updateUserLoged(val[0] as User);
         redirect && this.router.navigate(['/posts']);
       });

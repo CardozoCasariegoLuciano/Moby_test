@@ -1,126 +1,15 @@
 <div class="conteiner mb">
   <div class="profileData" *ngIf="!isEditing">
-    <div class="image">
-      <img [src]="image" alt="avatar" />
-    </div>
-
-    <h3>Profile <i class="pi pi-pencil edit-icon" (click)="edit()"></i></h3>
-
-    <div class="dataContainer">
-      <p><span>Name: </span>{{ userData && userData.fullName }}</p>
-      <p><span>User name:</span> {{ userData && userData.userName }}</p>
-      <p><span>Birth day:</span> {{ userData && userData.birthDate | date }}</p>
-      <p><span>Email:</span> {{ userData && userData.email }}</p>
-      <p><span>Role:</span> {{ userData && userData.role }}</p>
-      <p>
-        <span>Location:</span> latitude
-        {{ userData && userData.ubication.lat }} / longitude
-        {{ userData && userData.ubication.lng }}
-      </p>
-    </div>
-
-    <p-button
-      icon="pi pi-map"
-      (click)="showMapModal()"
-      label="Show map"
-      styleClass="p-button-text p-button-primary"
-    ></p-button>
-
-    <div *ngIf="isMapModalOpen">
-      <app-map
-        [showMap]="isMapModalOpen"
-        (oncloseModal)="closeMapModal()"
-        [coords]="userData.ubication"
-      ></app-map>
-    </div>
-
-    <div *ngIf="!arePostReady">
-      <app-spiner></app-spiner>
-    </div>
-
-    <div *ngIf="arePostReady">
-      <app-post-list [data]="userPosts" title="My posts"></app-post-list>
-    </div>
+    <app-user-information
+      [userData]="userData"
+      (isEditting)="edit()"
+    ></app-user-information>
   </div>
 
-  <form class="edit-form" [formGroup]="editUserForm" *ngIf="isEditing">
-    <div class="image">
-      <img [src]="image" alt="avatar" />
-    </div>
-
-    <h3>Edit profile</h3>
-
-    <div class="forms">
-      <div class="edit-form__input">
-        <span class="p-input-icon-left">
-          <i class="pi pi-user"></i>
-          <input
-            type="text"
-            pInputText
-            placeholder="Username"
-            formControlName="username"
-          />
-        </span>
-        <small *ngIf="isValidField('username')" class="p-error block"
-          >Username is required</small
-        >
-      </div>
-
-      <div class="edit-form__input">
-        <span class="p-input-icon-left">
-          <i class="pi pi-image"></i>
-          <input
-            type="text"
-            pInputText
-            placeholder="Image URL "
-            formControlName="photo"
-          />
-        </span>
-      </div>
-
-      <div class="geoTitle">
-        <h5>
-          Change geolocation:
-          <span (click)="setGeo()" class="geoFindMe">Find me</span>
-        </h5>
-        <span *ngIf="!geoEnable" class="errorGeo"
-          >You must enable geolocation in your browser to use this feature</span
-        >
-      </div>
-      <div class="edit-form__input">
-        <span class="p-input-icon-left">
-          <i class="pi pi-map-marker"></i>
-          <input
-            type="text"
-            pInputText
-            placeholder="Latitude"
-            formControlName="lat"
-          />
-        </span>
-        <small *ngIf="!areGeoEquals" class="p-error block">
-          Both are required</small
-        >
-      </div>
-
-      <div class="edit-form__input">
-        <span class="p-input-icon-left">
-          <i class="pi pi-map-marker"></i>
-          <input
-            type="text"
-            pInputText
-            placeholder="Longitude"
-            formControlName="lng"
-          />
-        </span>
-        <small *ngIf="!areGeoEquals" class="p-error block">
-          Both are required</small
-        >
-      </div>
-    </div>
-
-    <div class="buttons">
-      <button class="cancelBTN" (click)="cancelEdit()">Cancel</button>
-      <button class="editBTN" (click)="editData()">Edit</button>
-    </div>
-  </form>
+  <div *ngIf="isEditing">
+    <app-form-user-information
+      [userData]="userData"
+      (isEditting)="cancelEdit()"
+    ></app-form-user-information>
+  </div>
 </div>

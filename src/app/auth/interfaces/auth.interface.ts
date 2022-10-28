@@ -1,56 +1,14 @@
-export interface Iauth {
-  id?: number;
-  name?: string;
-  username?: string;
-  email?: string;
-  password?: string;
-  address?: Address;
-  phone?: string;
-  website?: string;
-  company?: Company;
-}
-
-export interface Address {
-  street?: string;
-  suite?: string;
-  city?: string;
-  zipcode?: string;
-  geo?: Geo;
-}
-
-export interface Company {
-  name?: string;
-  catchPhrase?: string;
-  bs?: string;
-}
-
-
-
-
-export interface User {
+export interface IuserRegister {
   id?: string;
-  fullName: string;
-  userName: string;
+  name: string;
+  username: string;
   email: string;
-  role: string;
+  password: string;
   photo: string;
   birthDate: string;
-  ubication: Geo;
 }
 
-export interface EditUser {
-  ubication: Geo;
-  photo: string;
-  userName: string;
-}
-
-export interface Geo {
-  lat: string;
-  lng: string;
-}
-
-export interface ShortUser {
-  id?: string;
-  userName: string;
-  photo: string;
+export interface FireAuth {
+  email: string;
+  password: string;
 }

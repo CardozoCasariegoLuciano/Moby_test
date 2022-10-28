@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ShortUser } from 'src/app/auth/interfaces/auth.interface';
+import { ShortUser } from 'src/app/auth/interfaces/user.interface';
 
 @Component({
   selector: 'app-likes-list',

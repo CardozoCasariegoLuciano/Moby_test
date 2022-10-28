@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { User } from '../../../auth/interfaces/auth.interface';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { User } from 'src/app/auth/interfaces/user.interface';
 
 @Component({
   selector: 'app-header',

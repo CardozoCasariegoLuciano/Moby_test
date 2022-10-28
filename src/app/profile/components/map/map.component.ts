@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Geo } from 'src/app/auth/interfaces/auth.interface';
+import { Geo } from 'src/app/auth/interfaces/user.interface';
 
 declare const google: any;
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
+  styleUrls: [],
 })
 export class MapComponent implements OnInit {
   @Input() showMap!: boolean;

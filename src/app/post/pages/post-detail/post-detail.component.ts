@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { User } from 'src/app/auth/interfaces/auth.interface';
+import { User } from 'src/app/auth/interfaces/user.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Comment } from '../../interfaces/comment.interface';
 import { EditPostData, Post } from '../../interfaces/posts.interface';
+import { CommentsService } from '../../services/comments.service';
 import { PostService } from '../../services/post.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   constructor(
     private activeRoute: ActivatedRoute,
     private postService: PostService,
+    private commentService: CommentsService,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -54,8 +56,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         this.getPostSubscription = this.postService.getPostByID(id).subscribe({
           next: (data) => {
             this.post = data as Post;
-            this.getCommentSubscription = this.postService
-              .getPostComments(this.post.id!)
+            this.getCommentSubscription = this.commentService
+              .getCommentsByPostID(this.post.id!)
               .subscribe((val) => {
                 this.comments = this.sortCommentsBydate(val as Comment[]);
               });
@@ -116,7 +118,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.postService.editPost(this.post.id!, data);
   }
 
-  disabledComments(){
+  disabledComments() {
     const data: EditPostData = {
       commentsDisabled: !this.post.commentsDisabled,
     };

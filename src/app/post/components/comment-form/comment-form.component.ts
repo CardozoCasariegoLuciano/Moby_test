@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/auth/interfaces/auth.interface';
+import { User } from 'src/app/auth/interfaces/user.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Comment, EditCommentData } from '../../interfaces/comment.interface';
+import { CommentsService } from '../../services/comments.service';
 import { PostService } from '../../services/post.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class CommentFormComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private postService: PostService,
+    private commentService: CommentsService,
     private fb: FormBuilder
   ) {}
 
@@ -81,7 +83,7 @@ export class CommentFormComponent implements OnInit {
       },
     };
 
-    this.postService.addComment(data);
+    this.commentService.addComment(data);
   }
 
   private editComment() {
@@ -91,7 +93,7 @@ export class CommentFormComponent implements OnInit {
       body: this.commentsForm.controls['body'].value,
     };
 
-    this.postService.editComment(commentID!,data);
+    this.commentService.editComment(commentID!, data);
   }
 
   closeModal() {

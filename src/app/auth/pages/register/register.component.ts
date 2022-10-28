@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { convertMessage } from 'src/app/helpers/authErrorMessajes';
-import {
-  emailPattern,
-} from 'src/app/shared/customValidators/regex';
-import { IuserRegister } from '../../interfaces/register.interface';
+import { emailPattern } from 'src/app/shared/customValidators/regex';
+import { IuserRegister } from '../../interfaces/auth.interface';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
@@ -21,10 +19,7 @@ export class RegisterComponent implements OnInit {
     message: '',
   };
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService
-  ) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.initForm();

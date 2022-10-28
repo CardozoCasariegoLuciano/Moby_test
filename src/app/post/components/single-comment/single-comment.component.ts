@@ -8,10 +8,10 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { User } from 'src/app/auth/interfaces/auth.interface';
+import { User } from 'src/app/auth/interfaces/user.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Comment, EditCommentData } from '../../interfaces/comment.interface';
-import { PostService } from '../../services/post.service';
+import { CommentsService } from '../../services/comments.service';
 
 @Component({
   selector: 'app-single-comment',
@@ -31,7 +31,7 @@ export class SingleCommentComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private postService: PostService
+    private commentService: CommentsService
   ) {}
 
   ngOnDestroy(): void {
@@ -65,7 +65,7 @@ export class SingleCommentComponent implements OnInit, OnDestroy {
     const data: EditCommentData = {
       isHide: !this.comment.isHide,
     };
-    this.postService.editComment(this.comment.id!, data);
+    this.commentService.editComment(this.comment.id!, data);
   }
 
   isAdmin(): boolean {
@@ -94,11 +94,11 @@ export class SingleCommentComponent implements OnInit, OnDestroy {
   }
 
   deleteComment() {
-    this.postService.deleteComment(this.comment.id!);
+    this.commentService.deleteComment(this.comment.id!);
   }
 
   toggleLike() {
-    this.postService.toogleLike(this.comment, this.user);
+    this.commentService.toogleLike(this.comment, this.user);
   }
 
   setLiked() {
