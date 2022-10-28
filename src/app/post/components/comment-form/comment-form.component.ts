@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User } from 'src/app/auth/interfaces/auth.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { NewComment } from '../../interfaces/comment.interface';
-import { Icoment } from '../../interfaces/user.interface';
+import { Comment, EditCommentData } from '../../interfaces/comment.interface';
 import { PostService } from '../../services/post.service';
 
 @Component({
@@ -11,12 +11,12 @@ import { PostService } from '../../services/post.service';
   styleUrls: ['./comment-form.component.scss'],
 })
 export class CommentFormComponent implements OnInit {
-  @Input() postID?: number;
-  @Input() comment?: Icoment;
+  @Input() postID?: string;
+  @Input() comment?: Comment;
   @Input() showForm!: boolean;
-  @Output() onEmit: EventEmitter<Date> = new EventEmitter();
   @Output() oncloseModal: EventEmitter<boolean> = new EventEmitter();
   commentsForm!: FormGroup;
+  user!: User;
 
   isEditing: boolean = false;
 
@@ -27,13 +27,17 @@ export class CommentFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.authService.getUserLogued.subscribe((user) => {
+      this.user = user!;
+    });
+
     this.comment ? (this.isEditing = true) : (this.isEditing = false);
     this.initForm();
   }
 
   private initForm() {
     this.commentsForm = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/[\S]/)]],
+      title: ['', [Validators.required, Validators.pattern(/[\S]/)]],
       body: [
         '',
         [
@@ -58,36 +62,36 @@ export class CommentFormComponent implements OnInit {
 
   emitir() {
     if (this.commentsForm.invalid) return;
-
     this.isEditing ? this.editComment() : this.addComment();
-
     this.closeModal();
-    this.postService.notifyAboutChange();
   }
 
   private addComment() {
-    const data: NewComment = {
-      name: this.commentsForm.controls['name'].value,
+    const data: Comment = {
+      title: this.commentsForm.controls['title'].value,
       body: this.commentsForm.controls['body'].value,
-      email: this.authService.getUserLogued!.email!,
       postId: this.postID!,
+      isHide: false,
+      likes: [],
+      created: new Date(),
+      author: {
+        id: this.user.id!,
+        photo: this.user.photo,
+        userName: this.user.userName,
+      },
     };
 
     this.postService.addComment(data);
-    this.onEmit.emit(new Date());
   }
 
   private editComment() {
     const commentID = this.comment!.id;
-    const data: NewComment = {
-      name: this.commentsForm.controls['name'].value,
+    const data: EditCommentData = {
+      title: this.commentsForm.controls['name'].value,
       body: this.commentsForm.controls['body'].value,
-      email: this.authService.getUserLogued!.email!,
-      postId: this.comment!.postId,
     };
 
-    this.postService.editComment(data, commentID);
-    this.onEmit.emit(new Date());
+    this.postService.editComment(data, commentID!);
   }
 
   closeModal() {
@@ -100,7 +104,7 @@ export class CommentFormComponent implements OnInit {
   }
 
   private resetWithInitialValues() {
-    this.commentsForm.controls['name'].reset(this.comment!.name);
+    this.commentsForm.controls['title'].reset(this.comment!.title);
     this.commentsForm.controls['body'].reset(this.comment!.body);
   }
 }

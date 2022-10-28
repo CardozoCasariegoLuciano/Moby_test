@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {User} from 'src/app/auth/interfaces/auth.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
-import { Icoment } from '../../interfaces/user.interface';
+import { Comment } from '../../interfaces/comment.interface';
 import { PostService } from '../../services/post.service';
 
 @Component({
@@ -8,25 +9,36 @@ import { PostService } from '../../services/post.service';
   templateUrl: './single-comment.component.html',
   styleUrls: ['./single-comment.component.scss'],
 })
-export class SingleCommentComponent {
-  @Input() comment!: Icoment;
+export class SingleCommentComponent implements OnInit {
+  @Input() comment!: Comment;
   @Output() onUpdate: EventEmitter<boolean> = new EventEmitter();
   isUpper: boolean = false;
   displayBasic: boolean = false;
+  user!: User;
 
   constructor(
     private authService: AuthService,
     private postService: PostService
   ) {}
 
+  ngOnInit(): void {
+    this.getUserLoged();
+  }
+
+  private getUserLoged() {
+    this.authService.getUserLogued.subscribe((user) => {
+      this.user = user!;
+    });
+  }
+
   get userLogued() {
     return this.authService.getUserLogued;
   }
 
   canDo(): boolean {
-    const userEmail = this.authService.getUserLogued.email!;
-    const authorEmail = this.comment.email;
-    return userEmail === authorEmail;
+    const userID = this.user.id;
+    const authorID = this.comment.author.id;
+    return userID === authorID;
   }
 
   changeCase() {
@@ -47,7 +59,7 @@ export class SingleCommentComponent {
 
   deleteComment() {
     this.postService
-      .deleteComment(this.comment.id)
-      .subscribe((_) => this.onUpdate.emit(true))
+      .deleteComment(this.comment.id!)
+      .subscribe((_) => this.onUpdate.emit(true));
   }
 }

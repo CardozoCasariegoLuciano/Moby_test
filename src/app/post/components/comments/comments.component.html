@@ -1,25 +1,9 @@
-<div class="comments">
-  <h3>Comments</h3>
-
-  <div *ngIf="comments.length > 0; else spiner">
+  <div>
     <div class="comment" *ngFor="let comment of comments">
       <app-single-comment
         [comment]="comment"
-        (onUpdate)="update()"
       ></app-single-comment>
     </div>
   </div>
 
-  <ng-template #spiner>
-    <app-spiner></app-spiner>
-  </ng-template>
 
-  <button class="emit-btn" (click)="showDialog()">New comment</button>
-</div>
-
-<app-comment-form
-  [postID]="postID"
-  [showForm]="displayBasic"
-  (onEmit)="sendEmmitd($event)"
-  (oncloseModal)="closeModal($event)"
-></app-comment-form>

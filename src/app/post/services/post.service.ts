@@ -1,80 +1,77 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { Observable, of } from 'rxjs';
+import { EditPostData, Post } from '../interfaces/posts.interface';
 import {
-  addDoc,
-  collection,
-  collectionData,
-  Firestore,
-} from '@angular/fire/firestore';
-import { catchError, Observable, Subject, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { NewComment } from '../interfaces/comment.interface';
-import { Post } from '../interfaces/posts.interface';
-import { Icoment, Ipost } from '../interfaces/user.interface';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
+import { Comment, EditCommentData } from '../interfaces/comment.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  private postsURL: string = environment.baseURL;
-  subjectNotifier: Subject<null> = new Subject<null>();
-
-  constructor(
-    private http: HttpClient,
-    private firestore: Firestore,
-    private db: AngularFirestore
-  ) {}
+  constructor(private firestore: Firestore, private db: AngularFirestore) {}
 
   getPosts(): Observable<Post[]> {
-    const postRef = collection(this.firestore, 'posts');
-    return collectionData(postRef, { idField: 'id' }) as Observable<Post[]>;
+    return this.db
+      .collection('posts', (ref) => {
+        return ref.where('isHide', '==', false);
+      })
+      .valueChanges({ idField: 'id' }) as Observable<Post[]>;
   }
 
-  getPostsByUserID(userID: string) {
+  getPostsByUserID(userID: string): Observable<Post[]> {
     return this.db
       .collection('posts', (ref) => {
         return ref.where('author.id', '==', userID);
       })
-      .valueChanges({idField: 'id'});
+      .valueChanges({ idField: 'id' }) as Observable<Post[]>;
   }
 
-  getPostByID(id: string): Observable<Ipost> {
-    return this.http
-      .get<Ipost>(`${this.postsURL}/posts/${id}`)
-      .pipe(catchError(this.errorHandler));
+  getPostByID(id: string): Observable<Post> {
+    return this.db
+      .doc(`posts/${id}`)
+      .valueChanges({ idField: 'id' }) as Observable<Post>;
   }
 
-  getPostComments(id: number): Observable<Icoment[]> {
-    return this.http
-      .get<Icoment[]>(`${this.postsURL}/comments?postId=${id}`)
-      .pipe(catchError(this.errorHandler));
+  getPostComments(postID: string): Observable<Comment[]> {
+    return this.db
+      .collection('comments', (ref) => {
+        return ref.where('postId', '==', postID);
+      })
+      .valueChanges({ idField: 'id' }) as Observable<Comment[]>;
   }
 
-  errorHandler(_err: HttpErrorResponse) {
-    return throwError(() => 'Content not found');
+  addComment(data: Comment) {
+    const commentRef = collection(this.firestore, 'comments');
+    addDoc(commentRef, data);
   }
 
-  addComment(data: NewComment): void {
-    this.http.post(`${this.postsURL}/comments`, data).subscribe();
+  editComment(_data: EditCommentData, _id: string): void {
+    //this.http.put(`${this.postsURL}/comments/${id}`, data).subscribe();
   }
 
-  editComment(data: NewComment, id: number): void {
-    this.http.put(`${this.postsURL}/comments/${id}`, data).subscribe();
-  }
-
-  deleteComment(id: number): Observable<Object> {
-    return this.http.delete(`${this.postsURL}/comments/${id}`);
-  }
-
-  notifyAboutChange() {
-    this.subjectNotifier.next(null);
+  deleteComment(_id: string): Observable<any> {
+    //return this.http.delete(`${this.postsURL}/comments/${id}`);
+    return of(true);
   }
 
   addPost(data: Post) {
     const postsRef = collection(this.firestore, 'posts');
-    return addDoc(postsRef, data);
+    addDoc(postsRef, data);
   }
 
-  editPost(data: Post, postID: string) {}
+  editPost(postID: string, data: EditPostData) {
+    let temp!: AngularFirestoreDocument<Post>;
+    temp = this.db.doc(`posts/${postID}`);
+    temp.update(data);
+  }
+
+  deletePost(postID: string) {
+    let temp!: AngularFirestoreDocument<Post>;
+    temp = this.db.doc(`posts/${postID}`);
+    temp.delete();
+  }
 }

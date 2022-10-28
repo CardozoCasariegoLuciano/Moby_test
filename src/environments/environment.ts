@@ -13,7 +13,6 @@ export const environment = {
     messagingSenderId: '1072000557881',
   },
   production: false,
-  baseURL: "https://luciano-cardozo-endpoint.herokuapp.com"
 };
 
 /*

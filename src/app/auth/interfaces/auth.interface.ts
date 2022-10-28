@@ -48,3 +48,9 @@ export interface Geo {
   lat: string;
   lng: string;
 }
+
+export interface ShortUser {
+  id?: string;
+  userName: string;
+  photo: string;
+}

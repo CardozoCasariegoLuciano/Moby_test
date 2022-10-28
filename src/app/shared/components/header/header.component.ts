@@ -27,16 +27,12 @@ export class HeaderComponent implements OnInit {
     this.initMenuItems();
     this.setSectionText();
     this.setUserLogued();
-
-    this.authService.test.subscribe(console.log)
   }
 
   private setUserLogued() {
-    const user = localStorage.getItem('userLogued');
-    if (user) {
-      this.userLogued = JSON.parse(user) as User;
-    }
-    //this.userLogued = this.authService.getUserLogued
+    this.authService.getUserLogued.subscribe((value) => {
+      this.userLogued = value!;
+    });
   }
 
   private initMenuItems() {

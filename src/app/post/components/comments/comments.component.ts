@@ -1,67 +1,12 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Icoment } from '../../interfaces/user.interface';
-import { PostService } from '../../services/post.service';
+import { Component, Input } from '@angular/core';
+import { Comment } from '../../interfaces/comment.interface';
 
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.scss'],
 })
-export class CommentsComponent implements OnInit, OnDestroy {
-  @Input() postID!: number;
-  @Output() onEmit: EventEmitter<Date> = new EventEmitter();
-  comments: Icoment[] = [];
-  displayBasic: boolean = false;
-  notifierSubscription!: Subscription;
-
-  constructor(private postService: PostService) {}
-
-  ngOnDestroy(): void {
-    this.notifierSubscription.unsubscribe();
-  }
-
-  ngOnInit(): void {
-    this.initComents();
-    this.listeSubject();
-  }
-
-  private listeSubject() {
-    this.notifierSubscription = this.postService.subjectNotifier.subscribe(
-      () => {
-        this.initComents();
-      }
-    );
-  }
-
-  private initComents() {
-    this.postService.getPostComments(this.postID).subscribe((resp) => {
-      this.comments = [];
-      this.comments = resp;
-    });
-  }
-
-  sendEmmitd(value: Date) {
-    this.onEmit.emit(value);
-    this.update();
-  }
-
-  showDialog() {
-    this.displayBasic = true;
-  }
-
-  closeModal(_: boolean) {
-    this.displayBasic = false;
-  }
-
-  update() {
-    this.initComents();
-  }
+export class CommentsComponent {
+  @Input() comments: Comment[] = [];
+  @Input() postID!: string;
 }

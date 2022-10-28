@@ -2,8 +2,7 @@
 
 .card {
   background-color: rgba($color: green, $alpha: 0.2);
-  width: 100%;
-  max-width: 600px;
+  width: 600px;
   margin: auto;
   margin-top: 80px;
   padding: 30px;
@@ -11,6 +10,23 @@
 
 .content {
   margin-bottom: 30px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+
+  .card-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    button {
+      width: 30px;
+      height: 30px;
+    }
+  }
 }
 
 .back-btn {
@@ -24,4 +40,28 @@
 .info-section {
   display: flex;
   justify-content: space-between;
+  gap: 30px;
+}
+
+.comments {
+  .comment-title {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    button {
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  .no-comments-msg {
+    span {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }

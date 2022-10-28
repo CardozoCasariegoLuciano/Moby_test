@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/auth/interfaces/auth.interface';
-import { Post } from '../../interfaces/posts.interface';
+import { EditPostData, Post } from '../../interfaces/posts.interface';
 import { PostService } from '../../services/post.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class NewPostFormComponent implements OnInit {
   isEditing: boolean = false;
   postForm!: FormGroup;
   @Input() post?: Post;
-  @Input() showForm!: boolean; 
+  @Input() showForm!: boolean;
   @Output() oncloseModal: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private postService: PostService, private fb: FormBuilder) {}
@@ -58,10 +58,9 @@ export class NewPostFormComponent implements OnInit {
       user = JSON.parse(storagedUser) as User;
     }
 
-    this.isEditing ? this.editPost(user) : this.addPost(user);
+    this.isEditing ? this.editPost() : this.addPost(user);
 
     this.closeModal();
-    //this.postService.notifyAboutChange();
   }
 
   private async addPost(user: User) {
@@ -71,23 +70,21 @@ export class NewPostFormComponent implements OnInit {
       isHide: false,
       commentsDisabled: false,
       author: { id: user.id!, email: user.email, name: user.fullName },
+      created: new Date(),
     };
 
     const resp = await this.postService.addPost(data);
-    console.log(resp)
+    console.log(resp);
   }
 
-  private editPost(user: User) {
+  private editPost() {
     const postID = this.post!.id;
-    const data: Post = {
+    const data: EditPostData = {
       title: this.postForm.controls['title'].value,
       body: this.postForm.controls['body'].value,
-      isHide: false,
-      commentsDisabled: false,
-      author: { id: user.id!, email: user.email, name: user.fullName },
     };
 
-    this.postService.editPost(data, postID!);
+    this.postService.editPost(postID!, data);
   }
 
   private resetWithInitialValues() {

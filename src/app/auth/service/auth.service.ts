@@ -4,14 +4,11 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import {
-  Firestore,
-} from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { addDoc, collection } from '@firebase/firestore';
-import {Subject} from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 import { EditUser, User } from '../interfaces/auth.interface';
 import { FireAuth, IuserRegister } from '../interfaces/register.interface';
 
@@ -19,11 +16,11 @@ import { FireAuth, IuserRegister } from '../interfaces/register.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  baseURL = environment.baseURL;
-  private userLogued: User | undefined;
   isLogged: boolean = false;
 
-  test: Subject<string> = new Subject()
+  private userSingin: BehaviorSubject<User | undefined> = new BehaviorSubject<
+    User | undefined
+  >(undefined);
 
   constructor(
     private router: Router,
@@ -33,12 +30,10 @@ export class AuthService {
   ) {
     this.getStorage();
     this.setIsLogued();
-
   }
 
   private setIsLogued() {
     this.auth.onAuthStateChanged((user) => {
-      console.log(user);
       if (user) {
         this.isLogged = true;
       } else {
@@ -47,27 +42,27 @@ export class AuthService {
     });
   }
 
-
-
   private getStorage() {
     const user = localStorage.getItem('userLogued');
     if (user) {
-      this.userLogued = JSON.parse(user) as User;
+      this.userSingin.next(JSON.parse(user) as User);
     }
   }
 
-  //Manejar esto con un subject
   get getUserLogued() {
-    return { ...this.userLogued } as User;
+    return this.userSingin;
   }
 
-  async editUser(data: EditUser, userID: string) {
+  updateUserLoged(user: User | undefined) {
+    this.userSingin.next(user);
+  }
+
+  editUser(data: EditUser, userID: string, userEmail: string) {
     let temp!: AngularFirestoreDocument<User>;
-    console.log(userID);
     temp = this.db.doc(`users/${userID}`);
     temp.update(data);
 
-    this.test.next("hola")
+    this.setStorage(userEmail, false);
   }
 
   fireRegister(data: FireAuth) {
@@ -82,7 +77,7 @@ export class AuthService {
     signOut(this.auth)
       .then(() => {
         localStorage.removeItem('userLogued');
-        this.userLogued = undefined;
+        this.updateUserLoged(undefined);
         this.router.navigate(['/auth']);
       })
       .catch((err) => {
@@ -110,14 +105,14 @@ export class AuthService {
     return data.email;
   }
 
-  setStorage(email: string) {
+  setStorage(email: string, redirect: boolean = true) {
     return this.db
       .collection('users', (ref) => ref.where('email', '==', email))
       .valueChanges({ idField: 'id' })
       .subscribe((val) => {
-        console.log(val);
         localStorage.setItem('userLogued', JSON.stringify(val[0]));
-        this.router.navigate(['/posts']);
+        this.getStorage();
+        redirect && this.router.navigate(['/posts']);
       });
   }
 }

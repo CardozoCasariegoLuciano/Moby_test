@@ -26,7 +26,7 @@ export class ProfilePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getStorage();
+    this.getUserLogued();
     this.initForm();
     this.setImage();
     this.getUserPosts();
@@ -34,7 +34,6 @@ export class ProfilePageComponent implements OnInit {
 
   private getUserPosts() {
     this.postService.getPostsByUserID(this.userData.id!).subscribe((posts) => {
-      console.log(posts);
       this.userPosts = posts as Post[];
       this.arePostReady = true;
     });
@@ -45,11 +44,10 @@ export class ProfilePageComponent implements OnInit {
       this.userData.photo || '../../../../assets/images/defaultUser.png';
   }
 
-  private getStorage() {
-    const user = localStorage.getItem('userLogued');
-    if (user) {
-      this.userData = JSON.parse(user) as User;
-    }
+  private getUserLogued() {
+    this.authService.getUserLogued.subscribe((value) => {
+      this.userData = value!;
+    });
   }
 
   private initForm() {
@@ -82,8 +80,10 @@ export class ProfilePageComponent implements OnInit {
       },
     };
 
-    const userID = this.authService.getUserLogued.id!;
-    this.authService.editUser(data, userID);
+    const userID = this.userData.id!
+    const userEmail = this.userData.email
+    this.authService.editUser(data, userID, userEmail);
+    this.isEditing = false;
   }
 
   isValidField(name: string) {

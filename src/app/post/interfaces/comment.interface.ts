@@ -1,6 +1,25 @@
-export interface NewComment {
-  name: string;
-  email: string;
+import {ShortUser} from "src/app/auth/interfaces/auth.interface";
+
+export interface Comment {
+  title: string;
   body: string;
-  postId: number;
+  isHide: boolean;
+  postId: string;
+  created?: Date
+  likes: ShortUser[],
+  author: ShortUser
+  id?: string
+}
+
+export interface EditCommentData {
+  title: string;
+  body: string;
+}
+
+export interface EditCommentHide {
+  isHide: boolean;
+}
+
+export interface EditCommentLikes {
+  likes: ShortUser[],
 }

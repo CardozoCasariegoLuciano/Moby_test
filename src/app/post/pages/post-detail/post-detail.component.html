@@ -1,32 +1,132 @@
-<div class="conteiner">
+<div class="conteiner mb">
   <div *ngIf="post; else spiner">
     <div class="card">
       <div class="info-section">
         <small>Post ID: {{ post.id }}</small>
-        <small *ngIf="emmitedValue">
-          Last comment: {{ emmitedValue | date: "dd MMM, YYYY" }}
+        <small>
+          {{
+            comments.length > 0
+              ? "Last comment: " +
+                (getLastCommentDate()
+                  | date: "yyyy/MM/dd HH:mm:ss")!.toString()
+              : "No comments yet"
+          }}
         </small>
       </div>
-      <h2>{{ post.title | titlecase }}</h2>
 
-      <div class="back-btn">
-        <button
-          pButton
-          pRipple
-          type="button"
-          icon="pi pi-arrow-left"
-          class="p-button-rounded p-button-secondary"
-          routerLink="/posts"
-        ></button>
+      <div class="card-header">
+        <h2>{{ post.title | titlecase }}</h2>
+        <div class="card-actions">
+          <div *ngIf="canDoUserAndAdmin()">
+            <button
+              pButton
+              pRipple
+              type="button"
+              (click)="deletePost()"
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-secondary"
+            ></button>
+          </div>
+          <div *ngIf="canDoUserAndAdmin() && !post.isHide">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-secondary"
+              (click)="hidePost()"
+            ></button>
+          </div>
+          <div *ngIf="canDoUserAndAdmin() && post.isHide">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-eye-slash"
+              class="p-button-rounded p-button-secondary"
+              (click)="hidePost()"
+            ></button>
+          </div>
+          <div *ngIf="canDoJustUser()">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-secondary"
+              (click)="showPostFormModal()"
+            ></button>
+          </div>
+          <div *ngIf="canDoUserAndAdmin()">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-comments"
+              class="p-button-rounded p-button-secondary"
+            ></button>
+          </div>
+        </div>
       </div>
 
       <p class="content">{{ post.body }}</p>
 
-      <app-comments
-        [postID]="post.id"
-        (onEmit)="printEmmited($event)"
-      ></app-comments>
+      <div *ngIf="conmmentReady" class="comments">
+        <div class="comment-title">
+          <h3>Comments</h3>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-plus"
+            class="p-button-rounded"
+            (click)="showCommentFormModal()"
+          ></button>
+        </div>
+
+        <div *ngIf="comments.length > 0">
+          <app-comments
+            [comments]="comments"
+            [postID]="post.id!"
+          ></app-comments>
+        </div>
+
+        <div *ngIf="comments.length <= 0">
+          <p class="no-comments-msg">
+            No comments yet
+            <span (click)="showCommentFormModal()">add new one</span>
+          </p>
+        </div>
+
+        <app-comment-form
+          [postID]="post.id!"
+          [showForm]="showCommentForm"
+          (oncloseModal)="hideCommentForm()"
+        ></app-comment-form>
+
+        <app-new-post-form
+          [post]="post"
+          [showForm]="showPostForm"
+          (oncloseModal)="hidePostForm()"
+        >
+        </app-new-post-form>
+      </div>
+
+      <div *ngIf="!conmmentReady">
+        <app-spiner></app-spiner>
+      </div>
     </div>
+  </div>
+
+  <div class="back-btn">
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-arrow-left"
+      class="p-button-rounded p-button-secondary"
+      routerLink="/posts"
+    ></button>
   </div>
 
   <ng-template #spiner>
