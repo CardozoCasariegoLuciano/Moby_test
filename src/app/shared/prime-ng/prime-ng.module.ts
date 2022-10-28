@@ -5,6 +5,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import {CalendarModule} from 'primeng/calendar';
+import {GMapModule} from 'primeng/gmap';
 
 @NgModule({
   exports: [
@@ -14,6 +15,7 @@ import {CalendarModule} from 'primeng/calendar';
     DialogModule,
     InputTextareaModule,
     CalendarModule,
+    GMapModule,
   ],
 })
 export class PrimeNGModule {}

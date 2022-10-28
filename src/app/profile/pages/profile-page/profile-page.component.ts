@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { EditUser, User } from 'src/app/auth/interfaces/auth.interface';
+import { EditUser, Geo, User } from 'src/app/auth/interfaces/auth.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Post } from 'src/app/post/interfaces/posts.interface';
 import { PostService } from 'src/app/post/services/post.service';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -21,11 +22,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   arePostReady: boolean = false;
   getUserSubscriber!: Subscription;
   getUserPostsSubscriber!: Subscription;
+  geoEnable: boolean = true;
+  isMapModalOpen: boolean = false;
+  userLocation!: Geo;
 
   constructor(
     private postService: PostService,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private profileService: ProfileService
   ) {}
 
   ngOnDestroy(): void {
@@ -38,6 +43,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.initForm();
     this.setImage();
     this.getUserPosts();
+    this.setUserLocation();
   }
 
   private getUserPosts() {
@@ -64,11 +70,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   private initForm() {
     this.editUserForm = this.fb.group({
-      username: [this.userData!.userName, [Validators.required]],
-      photo: [this.userData!.photo],
-      lat: [this.userData!.ubication?.lat],
-      lng: [this.userData!.ubication?.lng],
+      username: ['', [Validators.required]],
+      photo: [''],
+      lat: [''],
+      lng: [''],
     });
+    this.setDefaultEditValues();
   }
 
   edit() {
@@ -77,6 +84,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   cancelEdit() {
     this.isEditing = false;
+    this.setDefaultEditValues();
+  }
+
+  private setDefaultEditValues() {
+    const username = this.editUserForm.get('username')!;
+    const photo = this.editUserForm.get('photo')!;
+    const lat = this.editUserForm.get('lat')!;
+    const lng = this.editUserForm.get('lng')!;
+
+    username.setValue(this.userData!.userName);
+    photo.setValue(this.userData!.photo);
+    lat.setValue(this.userData!.ubication?.lat);
+    lng.setValue(this.userData!.ubication?.lng);
   }
 
   editData() {
@@ -124,5 +144,31 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     this.areGeoEquals = true;
     return true;
+  }
+
+  setUserLocation() {
+    this.profileService.getUserLocation().then((val) => {
+      this.userLocation = val;
+    });
+  }
+
+  setGeo() {
+    const lat = this.editUserForm.get('lat')!;
+    const lng = this.editUserForm.get('lng')!;
+
+    if (this.userLocation) {
+      lat.setValue(this.userLocation.lat);
+      lng.setValue(this.userLocation.lng);
+    } else {
+      this.geoEnable = false;
+    }
+  }
+
+  showMapModal() {
+    this.isMapModalOpen = true;
+  }
+
+  closeMapModal() {
+    this.isMapModalOpen = false;
   }
 }

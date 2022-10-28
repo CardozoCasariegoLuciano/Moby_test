@@ -7,15 +7,31 @@
     <h3>Profile <i class="pi pi-pencil edit-icon" (click)="edit()"></i></h3>
 
     <div class="dataContainer">
-      <p><span>Name: </span>{{ userData.fullName }}</p>
-      <p><span>User name:</span> {{ userData.userName }}</p>
-      <p><span>Birth day:</span> {{ userData.birthDate | date }}</p>
-      <p><span>Email:</span> {{ userData.email }}</p>
-      <p><span>Role:</span> {{ userData.role }}</p>
+      <p><span>Name: </span>{{ userData && userData.fullName }}</p>
+      <p><span>User name:</span> {{ userData && userData.userName }}</p>
+      <p><span>Birth day:</span> {{ userData && userData.birthDate | date }}</p>
+      <p><span>Email:</span> {{ userData && userData.email }}</p>
+      <p><span>Role:</span> {{ userData && userData.role }}</p>
       <p>
-        <span>Location:</span> latitude {{ userData.ubication.lat }} / longitude
-        {{ userData.ubication.lng }}
+        <span>Location:</span> latitude
+        {{ userData && userData.ubication.lat }} / longitude
+        {{ userData && userData.ubication.lng }}
       </p>
+    </div>
+
+    <p-button
+      icon="pi pi-map"
+      (click)="showMapModal()"
+      label="Show map"
+      styleClass="p-button-text p-button-primary"
+    ></p-button>
+
+    <div *ngIf="isMapModalOpen">
+      <app-map
+        [showMap]="isMapModalOpen"
+        (oncloseModal)="closeMapModal()"
+        [coords]="userData.ubication"
+      ></app-map>
     </div>
 
     <div *ngIf="!arePostReady">
@@ -62,7 +78,15 @@
         </span>
       </div>
 
-      <h5>Change geolocation</h5>
+      <div class="geoTitle">
+        <h5>
+          Change geolocation:
+          <span (click)="setGeo()" class="geoFindMe">Find me</span>
+        </h5>
+        <span *ngIf="!geoEnable" class="errorGeo"
+          >You must enable geolocation in your browser to use this feature</span
+        >
+      </div>
       <div class="edit-form__input">
         <span class="p-input-icon-left">
           <i class="pi pi-map-marker"></i>

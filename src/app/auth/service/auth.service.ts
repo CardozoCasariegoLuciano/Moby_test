@@ -8,7 +8,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { addDoc, collection } from '@firebase/firestore';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { EditUser, User } from '../interfaces/auth.interface';
 import { FireAuth, IuserRegister } from '../interfaces/register.interface';
@@ -63,7 +63,7 @@ export class AuthService {
     userRef = this.db.doc(`users/${userID}`);
     userRef.update(data);
 
-    this.setStorage(userEmail);
+    this.setStorage(userEmail, false);
   }
 
   fireRegister(data: FireAuth) {
@@ -106,7 +106,7 @@ export class AuthService {
     return addDoc(userRef, user);
   }
 
-  setStorage(email: string) {
+  setStorage(email: string, redirect: boolean = true) {
     return this.db
       .collection('users', (ref) => ref.where('email', '==', email))
       .valueChanges({ idField: 'id' })
@@ -114,7 +114,7 @@ export class AuthService {
       .subscribe((val) => {
         localStorage.setItem('userLogued', JSON.stringify(val[0]));
         this.updateUserLoged(val[0] as User);
-        this.router.navigate(['/posts']);
+        redirect && this.router.navigate(['/posts']);
       });
   }
 }

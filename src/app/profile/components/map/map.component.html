@@ -1,0 +1,28 @@
+<p-dialog
+  header="Map"
+  [(visible)]="showMap"
+  [style]="{ width: 'auto' }"
+  [closable]="false"
+>
+  <div *ngIf="areValidCoords">
+    <p>Lat: {{ coords.lat }} Lng: {{ coords.lng }}</p>
+    <p-gmap
+      [options]="options"
+      [style]="{ width: '100%', minWidth: '500px', height: '420px' }"
+      [overlays]="overlays"
+    ></p-gmap>
+  </div>
+
+  <div *ngIf="!areValidCoords">
+    No valid coordinates, try editing your profile
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="closeModal()"
+      label="Close"
+      styleClass="p-button-text p-button-danger"
+    ></p-button>
+  </ng-template>
+</p-dialog>

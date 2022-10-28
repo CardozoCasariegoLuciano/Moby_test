@@ -7,9 +7,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PrimeNGModule } from '../shared/prime-ng/prime-ng.module';
 import { SharedModule } from '../shared/shared.module';
 import {PostModule} from '../post/post.module';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
-  declarations: [ProfilePageComponent],
+  declarations: [ProfilePageComponent, MapComponent],
   imports: [
     CommonModule,
     RouterModule,

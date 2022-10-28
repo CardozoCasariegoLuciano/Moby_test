@@ -8,7 +8,6 @@
       margin-bottom: 15px;
       display: block;
       border-bottom: 1px solid #7c6ec9;
-      //padding: 0px 15px 0px 0px;
     }
 
     span {
@@ -24,6 +23,29 @@
 
   .posts_title {
     margin-top: 40px;
+  }
+}
+
+.geoTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+
+  h5 {
+    margin: 20px 0px 10px 0px;
+  }
+  .errorGeo {
+    color: tomato;
+    font-size: 0.8rem;
+  }
+
+  .geoFindMe {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
