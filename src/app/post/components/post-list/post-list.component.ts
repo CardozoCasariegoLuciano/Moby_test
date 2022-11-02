@@ -8,7 +8,7 @@ import { Post } from "../../interfaces/posts.interface";
 })
 export class PostListComponent {
   showAddPostModal: boolean = false;
-  @Input() data!: Post[];
+  @Input() data: Post[] = [];
   @Input() title: string = "List";
 
   showNewPostform() {

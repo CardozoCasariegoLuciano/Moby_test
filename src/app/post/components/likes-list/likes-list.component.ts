@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ShortUser } from 'src/app/auth/interfaces/user.interface';
 
 @Component({
@@ -6,14 +6,10 @@ import { ShortUser } from 'src/app/auth/interfaces/user.interface';
   templateUrl: './likes-list.component.html',
   styleUrls: ['./likes-list.component.scss'],
 })
-export class LikesListComponent implements OnInit {
+export class LikesListComponent {
   @Input() likes?: ShortUser[];
   @Input() showForm!: boolean;
   @Output() oncloseModal: EventEmitter<boolean> = new EventEmitter();
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   getImage(like: ShortUser) {
     return like.photo || '../../../../assets/images/defaultUser.png';

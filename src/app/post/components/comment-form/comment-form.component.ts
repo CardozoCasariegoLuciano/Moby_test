@@ -4,7 +4,6 @@ import { User } from 'src/app/auth/interfaces/user.interface';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Comment, EditCommentData } from '../../interfaces/comment.interface';
 import { CommentsService } from '../../services/comments.service';
-import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-comment-form',
@@ -23,7 +22,6 @@ export class CommentFormComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private postService: PostService,
     private commentService: CommentsService,
     private fb: FormBuilder
   ) {}

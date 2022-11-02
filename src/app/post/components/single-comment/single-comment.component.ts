@@ -35,7 +35,9 @@ export class SingleCommentComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.getUserSubs.unsubscribe();
+    if (this.getUserSubs) {
+      this.getUserSubs.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
